@@ -10,6 +10,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../polymerfire/firebase.html">
+<link rel="import" href="../polymerfire/firebase-app.html">
 <link rel="import" href="../polymerfire/firebase-common-behavior.html">
 
 <!--
@@ -24,7 +25,9 @@ Example:
 -->
 
 <dom-module id="uvalib-auth">
-
+  <template>
+    <firebase-app auth-domain="uvalib-mobile.firebaseapp.com" database-url="https://uvalib-mobile.firebaseio.com" api-key="AIzaSyACyEdD3xp2Ys_QWY6izvMHX2JO6GfUBck"></firebase-app>
+  </template>
   <script>
     Polymer({
       is: 'uvalib-auth',

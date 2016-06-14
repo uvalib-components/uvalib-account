@@ -79,6 +79,17 @@ Example:
       signInWithPin: function(uid, pin){
 
       },
+      /**
+       * Unauthenticates a Firebase client.
+       *
+       * @return {Promise} Promise that handles success and failure.
+       */
+      signOut: function() {
+        if (!this.auth) {
+          return Promise.reject('No app configured for auth!');
+        }
+        return this.auth.signOut();
+      },
       _computeSignedIn: function(user) {
         return !!user;
       },

@@ -29,7 +29,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <uvalib-auth auth="{{auth}}" signed-in="{{signedIn}}" user="{{user}}"></uvalib-auth>
 
           <p>User signed in: {{signedIn}}</p>
-          <p><paper-button on-tap="signIn">Sign In with Netbadge</paper-button></p>
+          <p>
+            <template is="dom-if" if="[[!signedIn]]">
+              <paper-button on-tap="signIn">Sign In with Netbadge</paper-button>
+            </template>
+            <template is="dom-if" if="[[signedIn]]">
+              <paper-button on-tap="signOut">Sign Out</paper-button>
+            </template>
+          </p>
 
         </template>
 
@@ -40,6 +47,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var app = document.querySelector('#app');
         app.signIn = function(){
           document.querySelector('uvalib-auth').signInWithNetbadge();
+        };
+        app.signOut = function(){
+          document.querySelector('uvalib-auth').signOut();
         };
 
     </script>

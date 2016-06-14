@@ -73,7 +73,7 @@ Example:
 
       signInWithNetbadge: function(){
         if (!this.signedIn) {
-          window.location = "https://api.library.virginia.edu/fireauth/hello.js?dest="+encodeURIComponent(window.location.href);
+          window.location = "https://api.library.virginia.edu/fireauth/hello.js?dest="+encodeURIComponent(window.location.href.split('?')[0]);
         }
       },
       signInWithPin: function(uid, pin){

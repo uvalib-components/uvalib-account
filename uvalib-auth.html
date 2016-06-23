@@ -77,7 +77,9 @@ Example:
         }
       },
       signInWithPin: function(uid, pin){
-
+        if (!this.signedIn) {
+          window.location = "https://api.library.virginia.edu/commuser/hello.js?dest="+encodeURIComponent(window.location.href.split('?')[0])+"&login="+encodeURIComponent(uid)+"&pin="+encodeURIComponent(pin);
+        }
       },
       /**
        * Unauthenticates a Firebase client.

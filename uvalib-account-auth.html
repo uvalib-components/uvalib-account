@@ -24,13 +24,11 @@ Example:
 @hero hero.svg
 -->
 
-<dom-module id="uvalib-auth">
-  <template>
-    <firebase-app auth-domain="uvalib-mobile.firebaseapp.com" database-url="https://uvalib-mobile.firebaseio.com" api-key="AIzaSyACyEdD3xp2Ys_QWY6izvMHX2JO6GfUBck"></firebase-app>
-  </template>
+<dom-module id="uvalib-account-auth">
+  
   <script>
     Polymer({
-      is: 'uvalib-auth',
+      is: 'uvalib-account-auth',
 
       behaviors: [
         Polymer.FirebaseCommonBehavior

@@ -12,13 +12,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-    <title>uvalib-auth Demo</title>
+    <title>uvalib-account-auth Demo</title>
     <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
     <!--<link rel="import" href="../../polymerfire/firebase-app.html">-->
     <link rel="import" href="../../paper-button/paper-button.html">
     <link rel="import" href="../../paper-input/paper-input.html">
-    <link rel="import" href="../uvalib-auth.html">
+    <link rel="import" href="../uvalib-account-app.html">
+    <link rel="import" href="../uvalib-account-auth.html">
   </head>
   <body unresolved>
 
@@ -27,7 +28,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <template is="dom-bind" id="app">
 
           <!--<firebase-app auth-domain="uvalib-mobile.firebaseapp.com" database-url="https://uvalib-mobile.firebaseio.com" api-key="AIzaSyACyEdD3xp2Ys_QWY6izvMHX2JO6GfUBck"></firebase-app>-->
-          <uvalib-auth auth="{{auth}}" signed-in="{{signedIn}}" user="{{user}}"></uvalib-auth>
+          <uvalib-account-app></uvalib-account-app>
+          <uvalib-account-auth auth="{{auth}}" signed-in="{{signedIn}}" user="{{user}}"></uvalib-account-auth>
 
           <p>User signed in: {{signedIn}}</p>
           <p>
@@ -55,15 +57,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         var app = document.querySelector('#app');
         app.signIn = function(){
-          document.querySelector('uvalib-auth').signInWithNetbadge();
+          document.querySelector('uvalib-account-auth').signInWithNetbadge();
         };
         app.signOut = function(){
-          document.querySelector('uvalib-auth').signOut();
+          document.querySelector('uvalib-account-auth').signOut();
         };
         app.commUserSignIn = function(){
           var login = document.querySelector('#login').value;
           var pin = document.querySelector('#pin').value;
-          document.querySelector('uvalib-auth').signInWithPin(login,pin);
+          document.querySelector('uvalib-account-auth').signInWithPin(login,pin);
         }
 
     </script>

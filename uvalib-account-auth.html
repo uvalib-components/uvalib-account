@@ -25,7 +25,7 @@ Example:
 -->
 
 <dom-module id="uvalib-account-auth">
-  
+
   <script>
     Polymer({
       is: 'uvalib-account-auth',
@@ -104,18 +104,43 @@ Example:
         if (this.auth) {
           this._unsubscribe = this.auth.onAuthStateChanged(function(user) {
             this._setUser(user);
+            this.fire('authenticated',user);
           }.bind(this), function(err) {
             this.fire('error', err);
           }.bind(this));
         }
       },
       ready: function(){
-        var params = new URLSearchParams(location.search);
-        var token = params.get("token"),
-            cid = params.get("id");
+//        var params = new URLSearchParams(location.search);
+//        var token = params.get("token"),
+//            cid = params.get("id");
+//            user = JSON.parse(params.get("user"));
+        var token = this._getURLParameter("token");
+        var cid = this._getURLParameter("id");
+//        var user = JSON.parse(this._getURLParameter("user"));
         if (token)
-        this.auth.signInWithCustomToken(token);
+          this.auth.signInWithCustomToken(token);
+//                   .then(function(){
+//                      this.fire('authenticated');
+//                   }.bind(this));
+      },
+
+      /**
+       * Gets a param from the search part of a URL by name.
+       * @param {string} param URL parameter to look for.
+       * @return {string|undefined} undefined if the URL parameter does not exist.
+       */
+      _getURLParameter: function(param) {
+        if (!window.location.search) {
+          return;
+        }
+        var m = new RegExp(param + '=([^&]*)').exec(window.location.search.substring(1));
+        if (!m) {
+          return;
+        }
+        return decodeURIComponent(m[1]);
       }
+
 
     });
   </script>

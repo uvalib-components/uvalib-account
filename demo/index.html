@@ -17,9 +17,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
     <!--<link rel="import" href="../../polymerfire/firebase-app.html">-->
     <link rel="import" href="../../paper-button/paper-button.html">
-    <link rel="import" href="../../paper-input/paper-input.html">
     <link rel="import" href="../uvalib-account-app.html">
     <link rel="import" href="../uvalib-account-auth.html">
+    <link rel="import" href="../uvalib-account-settings.html">
   </head>
   <body unresolved>
 
@@ -30,6 +30,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <!--<firebase-app auth-domain="uvalib-mobile.firebaseapp.com" database-url="https://uvalib-mobile.firebaseio.com" api-key="AIzaSyACyEdD3xp2Ys_QWY6izvMHX2JO6GfUBck"></firebase-app>-->
           <uvalib-account-app></uvalib-account-app>
           <uvalib-account-auth auth="{{auth}}" signed-in="{{signedIn}}" user="{{user}}"></uvalib-account-auth>
+          <uvalib-account-settings></uvalib-account-settings>
 
           <p>User signed in: {{signedIn}}</p>
           <p>

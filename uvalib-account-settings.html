@@ -14,6 +14,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../uvalib-account/uvalib-account-auth.html">
 <link rel="import" href="../uvalib-helper-libs/lodash.html">
 <link rel="import" href="../app-storage/app-indexeddb-mirror/app-indexeddb-mirror.html">
+<link rel="import" href="../app-storage/app-localstorage/app-localstorage-document.html">
 
 <!--
 An element providing a solution to no problem in particular.
@@ -30,6 +31,7 @@ Example:
   <template>
     <uvalib-account-auth user="{{user}}" on-authenticated="onAuthenticated"></uvalib-account-auth>
     <firebase-document id="doc" path="[[_createPath(user)]]" data="{{_liveSettings}}"></firebase-document>
+
     <app-indexeddb-mirror key="settings" data="{{_liveSettings}}" persisted-data="{{userSettings}}"></app-indexeddb-mirror>
   </template>
   <script>

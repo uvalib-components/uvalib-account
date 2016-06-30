@@ -11,6 +11,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../polymerfire/firebase.html">
 <link rel="import" href="../polymerfire/firebase-common-behavior.html">
+<link rel="import" href="../app-route/app-location.html">
+<link rel="import" href="../uvalib-helper-libs/lodash.html">
 
 <!--
 An element providing a solution to no problem in particular.
@@ -24,7 +26,9 @@ Example:
 -->
 
 <dom-module id="uvalib-account-auth">
-
+  <template>
+    <app-location query-params="{{_queryParams}}"></app-location>
+  </template>
   <script>
     Polymer({
       is: 'uvalib-account-auth',
@@ -34,6 +38,11 @@ Example:
       ],
 
       properties: {
+
+        _queryParams: {
+          type: Object,
+          notify: true
+        },
 
         /**
          * [`firebase.Auth`](https://firebase.google.com/docs/reference/js/firebase.auth.Auth) service interface.
@@ -60,6 +69,13 @@ Example:
          * documentation for the spec.
          */
         user: {
+          type: Object,
+          readOnly: true,
+          value: null,
+          notify: true
+        },
+
+        userMeta: {
           type: Object,
           readOnly: true,
           value: null,
@@ -110,35 +126,18 @@ Example:
         }
       },
       ready: function(){
-//        var params = new URLSearchParams(location.search);
-//        var token = params.get("token"),
-//            cid = params.get("id");
-//            user = JSON.parse(params.get("user"));
-        var token = this._getURLParameter("token");
-        var cid = this._getURLParameter("id");
-//        var user = JSON.parse(this._getURLParameter("user"));
-        if (token)
-          this.auth.signInWithCustomToken(token);
-//                   .then(function(){
-//                      this.fire('authenticated');
-//                   }.bind(this));
-      },
+        if (this._queryParams && !_.isEmpty(this._queryParams)) {
+          var token = this._queryParams.token; //   _getURLParameter("token");
+          var cid = this._queryParams.id;  //  getURLParameter("id");
+          if (this._queryParams.user)
+            this._setUserMeta(JSON.parse(this._queryParams.user)); //  getURLParameter("user"));
+          if (token)
+            this.auth.signInWithCustomToken(token).then(function(){
+              this._queryParams = {};
+            }.bind(this));
+        }
 
-      /**
-       * Gets a param from the search part of a URL by name.
-       * @param {string} param URL parameter to look for.
-       * @return {string|undefined} undefined if the URL parameter does not exist.
-       */
-      _getURLParameter: function(param) {
-        if (!window.location.search) {
-          return;
-        }
-        var m = new RegExp(param + '=([^&]*)').exec(window.location.search.substring(1));
-        if (!m) {
-          return;
-        }
-        return decodeURIComponent(m[1]);
-      }
+      },
 
 
     });

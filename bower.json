@@ -20,7 +20,8 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^1.2.0",
     "polymerfire": "firebase/polymerfire#^0.9.2",
-    "uvalib-helper-libs": "uvalib-components/uvalib-helper-libs#master"
+    "uvalib-helper-libs": "uvalib-components/uvalib-helper-libs#master",
+    "app-storage": "PolymerElements/app-storage#^0.9.4"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

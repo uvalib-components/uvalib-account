@@ -32,18 +32,84 @@ Example:
     <uvalib-account-auth user="{{user}}" on-authenticated="onAuthenticated"></uvalib-account-auth>
     <firebase-document id="doc" path="[[_createPath(user)]]" data="{{_liveSettings}}"></firebase-document>
 
-    <app-indexeddb-mirror key="settings" data="{{_liveSettings}}" persisted-data="{{userSettings}}"></app-indexeddb-mirror>
+    <app-indexeddb-mirror key="settings" data="{{_liveSettings}}" persisted-data="{{_userSettings}}"></app-indexeddb-mirror>
   </template>
   <script>
     Polymer({
       is: 'uvalib-account-settings',
 
       properties: {
-        userSettings: {
+        _userSettings: {
           type: Object,
           notify: true,
-          value: {settingsSeen: false}
+          value: {settingsSeen: false, permissions: {}}
+        },
+        // Permissions
+        searchHistoryPermission: {
+          type:Boolean,
+          value:false,
+          notify:true,
+          observer: '_changedPerms'
+        },
+        savedCollectionPermission: {
+          type:Boolean,
+          value:false,
+          notify:true,
+          observer: '_changedPerms'
+        },
+        webAnalyticsPermission: {
+          type:Boolean,
+          value:true,
+          notify:true,
+          observer: '_changedPerms'
+        },
+        requestNotifyPermission: {
+          type:Boolean,
+          value:false,
+          notify:true,
+          observer: '_changedPerms'
+        },
+        comingDueNotifyPermission: {
+          type:Boolean,
+          value:false,
+          notify:true,
+          observer: '_changedPerms'
+        },
+        recalledItemsNotifyPermission: {
+          type:Boolean,
+          value:false,
+          notify:true,
+          observer: '_changedPerms'
+        },
+        finesNotifyPermission: {
+          type:Boolean,
+          value:false,
+          notify:true,
+          observer: '_changedPerms'
         }
+      },
+
+      observers: [
+        '_permsChanged(_userSettings.permissions)'
+      ],
+
+      _permsChanged: function(){
+        this.searchHistoryPermission=this._userSettings.permissions.searchHistory;
+        this.savedCollectionPermission=this._userSettings.permissions.savedCollections;
+        this.webAnalyticsPermission=this._userSettings.permissions.webAnalytics;
+        this.requestNotifyPermission=this._userSettings.permissions.requestNotify;
+        this.comingDueNotifyPermission=this._userSettings.permissions.comingDueNotify;
+        this.recalledItemsNotifyPermission=this._userSettings.permissions.recalledNotify;
+        this.finesNotifyPermission=this._userSettings.permissions.finesNotify;
+      },
+      _changedPerms: function(){
+        this._userSettings.permissions.searchHistory=this.searchHistoryPermission;
+        this._userSettings.permissions.savedCollections=this.savedCollectionPermission;
+        this._userSettings.permissions.webAnalytics=this.webAnalyticsPermission;
+        this._userSettings.permissions.requestNotify=this.requestNotifyPermission;
+        this._userSettings.permissions.comingDueNotify=this.comingDueNotifyPermission;
+        this._userSettings.permissions.recalledNotify=this.recalledItemsNotifyPermission;
+        this._userSettings.permissions.finesNotify=this.finesNotifyPermission;
       },
 
       onAuthenticated: function(){

@@ -105,13 +105,13 @@ Example:
       },
       _changedPerms: function(){
         if (!this._userSettings.permissions) this._userSettings.permissions={};
-        this._userSettings.permissions.searchHistory=this.searchHistoryPermission;
-        this._userSettings.permissions.savedCollections=this.savedCollectionPermission;
-        this._userSettings.permissions.webAnalytics=this.webAnalyticsPermission;
-        this._userSettings.permissions.requestNotify=this.requestNotifyPermission;
-        this._userSettings.permissions.comingDueNotify=this.comingDueNotifyPermission;
-        this._userSettings.permissions.recalledNotify=this.recalledItemsNotifyPermission;
-        this._userSettings.permissions.finesNotify=this.finesNotifyPermission;
+        this.set('_userSettings.permissions.searchHistory',this.searchHistoryPermission);
+        this.set('_userSettings.permissions.savedCollections',this.savedCollectionPermission);
+        this.set('_userSettings.permissions.webAnalytics',this.webAnalyticsPermission);
+        this.set('_userSettings.permissions.requestNotify',this.requestNotifyPermission);
+        this.set('_userSettings.permissions.comingDueNotify',this.comingDueNotifyPermission);
+        this.set('_userSettings.permissions.recalledNotify',this.recalledItemsNotifyPermission);
+        this.set('_userSettings.permissions.finesNotify',this.finesNotifyPermission);
       },
 
       onAuthenticated: function(){

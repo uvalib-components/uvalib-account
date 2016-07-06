@@ -47,49 +47,41 @@ Example:
         // Permissions
         searchHistoryPermission: {
           type:Boolean,
-          value:false,
           notify:true,
           observer: '_changedPerms'
         },
         savedCollectionPermission: {
           type:Boolean,
-          value:false,
           notify:true,
           observer: '_changedPerms'
         },
         webAnalyticsPermission: {
           type:Boolean,
-          value:true,
           notify:true,
           observer: '_changedPerms'
         },
         requestNotifyPermission: {
           type:Boolean,
-          value:false,
           notify:true,
           observer: '_changedPerms'
         },
         comingDueNotifyPermission: {
           type:Boolean,
-          value:false,
           notify:true,
           observer: '_changedPerms'
         },
         overDueNotifyPermission: {
           type:Boolean,
-          value:false,
           notify:true,
           observer: '_changedPerms'
         },
         recalledItemsNotifyPermission: {
           type:Boolean,
-          value:false,
           notify:true,
           observer: '_changedPerms'
         },
         finesNotifyPermission: {
           type:Boolean,
-          value:false,
           notify:true,
           observer: '_changedPerms'
         }
@@ -127,7 +119,8 @@ Example:
         this.$.doc.getStoredValue(path)
                     .then(function(obj){
                       if (_.isEmpty(obj))
-                        this.$.doc.setStoredValue(path, {settingsSeen: false});
+                        this.$.doc.setStoredValue(path, {settingsSeen: false,
+                                                         permissions:{webAnalytics: true} });
                     }.bind(this));
       },
 

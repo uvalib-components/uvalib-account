@@ -92,18 +92,19 @@ Example:
       ],
 
       _permsChanged: function(){
-        if (!this._userSettings.permissions) this._userSettings.permissions={};
-        this.searchHistoryPermission=this._userSettings.permissions.searchHistory;
-        this.savedCollectionPermission=this._userSettings.permissions.savedCollections;
-        this.webAnalyticsPermission=this._userSettings.permissions.webAnalytics;
-        this.requestNotifyPermission=this._userSettings.permissions.requestNotify;
-        this.comingDueNotifyPermission=this._userSettings.permissions.comingDueNotify;
-        this.overDueNotifyPermission=this._userSettings.permissions.overDueNotify;
-        this.recalledItemsNotifyPermission=this._userSettings.permissions.recalledNotify;
-        this.finesNotifyPermission=this._userSettings.permissions.finesNotify;
+        if (!_.isEmpty(this._userSettings.permissions)) {
+          this.searchHistoryPermission=this._userSettings.permissions.searchHistory;
+          this.savedCollectionPermission=this._userSettings.permissions.savedCollections;
+          this.webAnalyticsPermission=this._userSettings.permissions.webAnalytics;
+          this.requestNotifyPermission=this._userSettings.permissions.requestNotify;
+          this.comingDueNotifyPermission=this._userSettings.permissions.comingDueNotify;
+          this.overDueNotifyPermission=this._userSettings.permissions.overDueNotify;
+          this.recalledItemsNotifyPermission=this._userSettings.permissions.recalledNotify;
+          this.finesNotifyPermission=this._userSettings.permissions.finesNotify;
+        }
       },
       _changedPerms: function(){
-        if (!this._userSettings.permissions) this._userSettings.permissions={};
+        if (!_.isEmpty(this._userSettings.permissions))
         this.set('_userSettings.permissions',{searchHistory:this.searchHistoryPermission,
                                               savedCollections:this.savedCollectionPermission,
                                               webAnalytics:this.webAnalyticsPermission,

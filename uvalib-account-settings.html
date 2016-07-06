@@ -75,6 +75,12 @@ Example:
           notify:true,
           observer: '_changedPerms'
         },
+        overDueNotifyPermission: {
+          type:Boolean,
+          value:false,
+          notify:true,
+          observer: '_changedPerms'
+        },
         recalledItemsNotifyPermission: {
           type:Boolean,
           value:false,
@@ -100,6 +106,7 @@ Example:
         this.webAnalyticsPermission=this._userSettings.permissions.webAnalytics;
         this.requestNotifyPermission=this._userSettings.permissions.requestNotify;
         this.comingDueNotifyPermission=this._userSettings.permissions.comingDueNotify;
+        this.overDueNotifyPermission=this._userSettings.permissions.overDueNotify;
         this.recalledItemsNotifyPermission=this._userSettings.permissions.recalledNotify;
         this.finesNotifyPermission=this._userSettings.permissions.finesNotify;
       },
@@ -110,6 +117,7 @@ Example:
         this.set('_userSettings.permissions.webAnalytics',this.webAnalyticsPermission);
         this.set('_userSettings.permissions.requestNotify',this.requestNotifyPermission);
         this.set('_userSettings.permissions.comingDueNotify',this.comingDueNotifyPermission);
+        this.set('_userSettings.permissions.overDueNotify',this.overDueNotifyPermission);
         this.set('_userSettings.permissions.recalledNotify',this.recalledItemsNotifyPermission);
         this.set('_userSettings.permissions.finesNotify',this.finesNotifyPermission);
       },

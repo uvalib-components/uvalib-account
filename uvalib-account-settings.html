@@ -31,98 +31,38 @@ Example:
   <template>
     <uvalib-account-auth user="{{user}}" on-authenticated="onAuthenticated"></uvalib-account-auth>
     <firebase-document id="doc" path="[[_createPath(user)]]" data="{{_liveSettings}}"></firebase-document>
+    <app-indexeddb-mirror key="settings" data="{{_liveSettings}}" persisted-data="{{userSettings}}"></app-indexeddb-mirror>
 
-    <app-indexeddb-mirror key="settings" data="{{_liveSettings}}" persisted-data="{{_userSettings}}"></app-indexeddb-mirror>
   </template>
   <script>
     Polymer({
       is: 'uvalib-account-settings',
 
       properties: {
-        _userSettings: {
+        userSettings: {
           type: Object,
-          notify: true //,
-//          value: {settingsSeen: false, permissions: {} }
+          notify: true
         },
-        // Permissions
-        searchHistoryPermission: {
-          type:Boolean,
-          notify:true,
-          observer: '_changedPerms'
-        },
-        savedCollectionPermission: {
-          type:Boolean,
-          notify:true,
-          observer: '_changedPerms'
-        },
-        webAnalyticsPermission: {
-          type:Boolean,
-          notify:true,
-          observer: '_changedPerms'
-        },
-        requestNotifyPermission: {
-          type:Boolean,
-          notify:true,
-          observer: '_changedPerms'
-        },
-        comingDueNotifyPermission: {
-          type:Boolean,
-          notify:true,
-          observer: '_changedPerms'
-        },
-        overDueNotifyPermission: {
-          type:Boolean,
-          notify:true,
-          observer: '_changedPerms'
-        },
-        recalledItemsNotifyPermission: {
-          type:Boolean,
-          notify:true,
-          observer: '_changedPerms'
-        },
-        finesNotifyPermission: {
-          type:Boolean,
-          notify:true,
-          observer: '_changedPerms'
-        }
-      },
 
-      observers: [
-        '_permsChanged(_userSettings.permissions)'
-      ],
-
-      _permsChanged: function(){
-        if (!_.isEmpty(this._userSettings.permissions)) {
-          this.searchHistoryPermission=this._userSettings.permissions.searchHistory;
-          this.savedCollectionPermission=this._userSettings.permissions.savedCollections;
-          this.webAnalyticsPermission=this._userSettings.permissions.webAnalytics;
-          this.requestNotifyPermission=this._userSettings.permissions.requestNotify;
-          this.comingDueNotifyPermission=this._userSettings.permissions.comingDueNotify;
-          this.overDueNotifyPermission=this._userSettings.permissions.overDueNotify;
-          this.recalledItemsNotifyPermission=this._userSettings.permissions.recalledNotify;
-          this.finesNotifyPermission=this._userSettings.permissions.finesNotify;
-        }
-      },
-      _changedPerms: function(){
-        if (!_.isEmpty(this._userSettings.permissions))
-        this.set('_userSettings.permissions',{searchHistory:this.searchHistoryPermission,
-                                              savedCollections:this.savedCollectionPermission,
-                                              webAnalytics:this.webAnalyticsPermission,
-                                              requestNotify:this.requestNotifyPermission,
-                                              comingDueNotify:this.comingDueNotifyPermission,
-                                              overDueNotify:this.overDueNotifyPermission,
-                                              recalledNotify:this.recalledItemsNotifyPermission,
-                                              finesNotify:this.finesNotifyPermission});
       },
 
       onAuthenticated: function(){
-        var path = this._createPath(this.user);
-        this.$.doc.getStoredValue(path)
+        if (this.user) {
+          var path = this._createPath(this.user);
+          this.$.doc.getStoredValue(path)
                     .then(function(obj){
                       if (_.isEmpty(obj))
                         this.$.doc.setStoredValue(path, {settingsSeen: false,
-                                                         permissions:{webAnalytics: true} });
+                                                         permissions:{searchHistory:false,
+                                                                      savedCollections:false,
+                                                                      webAnalytics:true,
+                                                                      requestNotify:false,
+                                                                      comingDueNotify:false,
+                                                                      overDueNotify:false,
+                                                                      recalledNotify:false,
+                                                                      finesNotify:false} });
                     }.bind(this));
+        }
       },
 
       _createPath: function(user){

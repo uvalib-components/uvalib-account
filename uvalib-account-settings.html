@@ -54,12 +54,14 @@ Example:
                       if (_.isEmpty(obj))
                         this.$.doc.setStoredValue(path, {settingsSeen: false,
                                                          permissions:{searchHistory:false,
+                                                                      itemsLists:false,
                                                                       savedCollections:false,
                                                                       webAnalytics:true,
                                                                       requestNotify:false,
                                                                       comingDueNotify:false,
                                                                       overDueNotify:false,
                                                                       recalledNotify:false,
+                                                                      itemsArrivedNotify:false,
                                                                       finesNotify:false} });
                     }.bind(this));
         }

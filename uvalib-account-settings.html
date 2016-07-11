@@ -14,7 +14,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../uvalib-account/uvalib-account-auth.html">
 <link rel="import" href="../uvalib-helper-libs/lodash.html">
 <link rel="import" href="../app-storage/app-indexeddb-mirror/app-indexeddb-mirror.html">
-<link rel="import" href="../app-storage/app-localstorage/app-localstorage-document.html">
 
 <!--
 An element providing a solution to no problem in particular.
@@ -29,10 +28,11 @@ Example:
 
 <dom-module id="uvalib-account-settings">
   <template>
+    <!--
     <uvalib-account-auth user="{{user}}" on-authenticated="onAuthenticated"></uvalib-account-auth>
+  -->
     <firebase-document id="doc" path="[[_createPath(user)]]" data="{{_liveSettings}}"></firebase-document>
     <app-indexeddb-mirror key="settings" data="{{_liveSettings}}" persisted-data="{{userSettings}}"></app-indexeddb-mirror>
-
   </template>
   <script>
     Polymer({
@@ -43,9 +43,39 @@ Example:
           type: Object,
           notify: true
         },
-
+        /**
+         * [`firebase.Auth`](https://firebase.google.com/docs/reference/js/firebase.auth.Auth) service interface.
+         */
+        auth: {
+          type: Object,
+          computed: '_computeAuth(app)',
+          observer: '__authChanged'
+        },
       },
 
+      __authChanged: function(auth, oldAuth) {
+        this.auth.onAuthStateChanged(function(user) {
+          if (user) {
+            var path = this._createPath(this.user);
+            this.$.doc.getStoredValue(path)
+                      .then(function(obj){
+                        if (_.isEmpty(obj))
+                          this.$.doc.setStoredValue(path, {settingsSeen: false,
+                                                           permissions:{searchHistory:false,
+                                                                        itemsLists:false,
+                                                                        savedCollections:false,
+                                                                        webAnalytics:true,
+                                                                        requestNotify:false,
+                                                                        comingDueNotify:false,
+                                                                        overDueNotify:false,
+                                                                        recalledNotify:false,
+                                                                        itemsArrivedNotify:false,
+                                                                        finesNotify:false} });
+                      }.bind(this));
+          }
+        });
+      },
+/*
       onAuthenticated: function(){
         if (this.user) {
           var path = this._createPath(this.user);
@@ -66,7 +96,7 @@ Example:
                     }.bind(this));
         }
       },
-
+*/
       _createPath: function(user){
         if (user)
           return "/users/"+user.uid+"/settings";

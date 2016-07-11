@@ -11,8 +11,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../polymerfire/firebase.html">
 <link rel="import" href="../polymerfire/firebase-common-behavior.html">
+<link rel="import" href="../polymerfire/firebase-document.html">
 <link rel="import" href="../app-route/app-location.html">
 <link rel="import" href="../uvalib-helper-libs/lodash.html">
+<link rel="import" href="../app-storage/app-localstorage/app-localstorage-document.html">
 
 <!--
 An element providing a solution to no problem in particular.
@@ -27,7 +29,8 @@ Example:
 
 <dom-module id="uvalib-account-auth">
   <template>
-    <app-location query-params="{{_queryParams}}"></app-location>
+    <app-location query-params="{{_queryParams}}" ></app-location>
+    <app-localstorage-document key="user" data="{{userMeta}}"></app-localstorage-document>
   </template>
   <script>
     Polymer({
@@ -38,6 +41,11 @@ Example:
       ],
 
       properties: {
+
+        accountInfo: {
+          type: Object,
+          notify: true
+        },
 
         _queryParams: {
           type: Object,
@@ -70,15 +78,11 @@ Example:
          */
         user: {
           type: Object,
-          readOnly: true,
-          value: null,
           notify: true
         },
 
         userMeta: {
           type: Object,
-          readOnly: true,
-          value: null,
           notify: true
         }
 
@@ -103,6 +107,7 @@ Example:
         if (!this.auth) {
           return Promise.reject('No app configured for auth!');
         }
+        this.set('userMeta',{});
         return this.auth.signOut();
       },
       _computeSignedIn: function(user) {
@@ -118,8 +123,11 @@ Example:
         }
         if (this.auth) {
           this._unsubscribe = this.auth.onAuthStateChanged(function(user) {
-            this._setUser(user);
-            this.fire('authenticated',user);
+            this.set('user',user);
+
+            if (user) {
+              this.fire('authenticated',user);
+            }
           }.bind(this), function(err) {
             this.fire('error', err);
           }.bind(this));
@@ -127,18 +135,27 @@ Example:
       },
       ready: function(){
         if (this._queryParams && !_.isEmpty(this._queryParams)) {
-          var token = this._queryParams.token; //   _getURLParameter("token");
-          var cid = this._queryParams.id;  //  getURLParameter("id");
-          if (this._queryParams.user)
-            this._setUserMeta(JSON.parse(this._queryParams.user)); //  getURLParameter("user"));
+          var token = this._queryParams.token;
+          var cid = this._queryParams.id;
+
           if (token)
             this.auth.signInWithCustomToken(token).then(function(){
+              if (this._queryParams.user) {
+                this.set('userMeta',this._userMetaCleanup(JSON.parse(this._queryParams.user).user));
+                console.log('setup the userMeta data from url');
+              }
               this._queryParams = {};
             }.bind(this));
         }
 
       },
 
+      _userMetaCleanup: function(meta){
+        return _.mapValues(_.omit(meta,['$']), function(o){
+          if (Array.isArray(o) && o.length === 1) return o[0];
+          else return o;
+        });
+      }
 
     });
   </script>

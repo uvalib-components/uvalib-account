@@ -31,7 +31,7 @@ Example:
     <!--
     <uvalib-account-auth user="{{user}}" on-authenticated="onAuthenticated"></uvalib-account-auth>
   -->
-    <firebase-document id="doc" path="[[_createPath(user)]]" data="{{_liveSettings}}"></firebase-document>
+    <firebase-document id="doc" path="{{_createPath(user)}}" data="{{_liveSettings}}"></firebase-document>
     <app-indexeddb-mirror key="settings" data="{{_liveSettings}}" persisted-data="{{userSettings}}"></app-indexeddb-mirror>
   </template>
   <script>
@@ -48,14 +48,22 @@ Example:
          */
         auth: {
           type: Object,
-          computed: '_computeAuth(app)',
           observer: '__authChanged'
         },
+        user: {
+          type:Object
+        }
       },
+
+//      _computeUser: function(auth) {
+//        if (auth) return auth.currentUser;
+//        else return null;
+//      },
 
       __authChanged: function(auth, oldAuth) {
         this.auth.onAuthStateChanged(function(user) {
           if (user) {
+            this.set('user',user);
             var path = this._createPath(this.user);
             this.$.doc.getStoredValue(path)
                       .then(function(obj){
@@ -73,7 +81,7 @@ Example:
                                                                         finesNotify:false} });
                       }.bind(this));
           }
-        });
+        }.bind(this));
       },
 /*
       onAuthenticated: function(){

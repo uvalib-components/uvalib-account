@@ -58,7 +58,8 @@ Example:
         auth: {
           type: Object,
           computed: '_computeAuth(app)',
-          observer: '__authChanged'
+          observer: '__authChanged',
+          notify: true
         },
 
         /**
@@ -79,6 +80,10 @@ Example:
         user: {
           type: Object,
           notify: true
+        },
+
+        token: {
+
         },
 
         userMeta: {

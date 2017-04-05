@@ -23,7 +23,7 @@ Example:
 
     <uvalib-auth></uvalib-auth>
 
-@demo demo/index.html
+@demo demo/auth.html
 @hero hero.svg
 -->
 
@@ -44,7 +44,8 @@ Example:
 
         accountInfo: {
           type: Object,
-          notify: true
+          notify: true,
+          value: null
         },
 
         _queryParams: {
@@ -79,11 +80,8 @@ Example:
          */
         user: {
           type: Object,
-          notify: true
-        },
-
-        token: {
-
+          notify: true,
+          value: null
         },
 
         userMeta: {

@@ -9,12 +9,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../polymerfire/firebase.html">
-<link rel="import" href="../polymerfire/firebase-common-behavior.html">
-<link rel="import" href="../polymerfire/firebase-document.html">
+
+<link rel="import" href="../polymerfire/firebase-auth.html">
 <link rel="import" href="../app-route/app-location.html">
-<link rel="import" href="../uvalib-helper-libs/lodash.html">
 <link rel="import" href="../app-storage/app-localstorage/app-localstorage-document.html">
+
+<link rel="import" href="uvalib-account-app.html">
+
+<!--
+<link rel="import" href="../uvalib-helper-libs/lodash.html">
+-->
 
 <!--
 An element providing a solution to no problem in particular.
@@ -29,47 +33,33 @@ Example:
 
 <dom-module id="uvalib-account-auth">
   <template>
-    <app-location query-params="{{_queryParams}}" ></app-location>
-    <app-localstorage-document key="user" data="{{userMeta}}"></app-localstorage-document>
+    <app-location query-params="{{_queryParams}}"></app-location>
+    <app-localstorage-document key="uvalib-auth" data="{{_userMeta}}"></app-localstorage-document>
+    <firebase-auth id="auth" on-error="_handleError" signed-in="{{signedIn}}" user="{{user}}"></firebase-auth>
   </template>
   <script>
     Polymer({
       is: 'uvalib-account-auth',
 
-      behaviors: [
-        Polymer.FirebaseCommonBehavior
-      ],
-
       properties: {
 
-        accountInfo: {
-          type: Object,
-          notify: true,
-          value: null
-        },
-
+        /**
+         * Used to bind the url query from the app-location element for use in getting the
+         * firebase token and user info from the server.
+         */
         _queryParams: {
           type: Object,
-          notify: true
-        },
-
-        /**
-         * [`firebase.Auth`](https://firebase.google.com/docs/reference/js/firebase.auth.Auth) service interface.
-         */
-        auth: {
-          type: Object,
-          computed: '_computeAuth(app)',
-          observer: '__authChanged',
+          value: null,
           notify: true
         },
 
         /**
           * True if the client is authenticated, and false if the client is not
-          * authenticated.
+          * authenticated for Firebase (Library API) use.
           */
         signedIn: {
           type: Boolean,
-          computed: '_computeSignedIn(user)',
+          value: false,
           notify: true
         },
 
@@ -84,35 +74,71 @@ Example:
           value: null
         },
 
-        userMeta: {
-          type: Object,
-          notify: true
+        /**
+         * LDAP info about the user, this is identifying information and should be handled with care
+         * the latest firebase token is also stored here
+         */
+        _userMeta: {
+          type: Object
+        },
+
+        /**
+         * Firebase token
+         */
+        _fireToken: {
+          type: String,
+          computed: '_getToken(_queryParams)',
+          observer: '_fbSignIn',
         }
 
       },
 
+      /**
+       * Attempts to sign in to firebase with token if not already signed in
+       *
+       * @return {Promise} Promise that handles success and failure.
+       */
+      _fbSignIn: function(){
+        if (!this.signedIn && this._fireToken) {
+          return this.$.auth.signInWithCustomToken(this._fireToken);
+        }
+      },
+
+      /**
+       * Redirects the user to authenticate with UVA Netbadge, which will redirect to the current url with a token and user info
+       */
       signInWithNetbadge: function(){
         if (!this.signedIn) {
           window.location = "https://api.library.virginia.edu/fireauth/hello.js?dest="+encodeURIComponent(window.location.href.split('?')[0]);
         }
       },
+      /**
+       * Redirects the user to authenticate with a UVA Library PIN, limited attempts, then redirects to the current url with a token and user info
+       */
       signInWithPin: function(uid, pin){
         if (!this.signedIn) {
           window.location = "https://api.library.virginia.edu/commuser/hello.js?dest="+encodeURIComponent(window.location.href.split('?')[0])+"&login="+encodeURIComponent(uid)+"&pin="+encodeURIComponent(pin);
         }
       },
+
       /**
        * Unauthenticates a Firebase client.
        *
        * @return {Promise} Promise that handles success and failure.
        */
       signOut: function() {
-        if (!this.auth) {
-          return Promise.reject('No app configured for auth!');
-        }
-        this.set('userMeta',{});
-        return this.auth.signOut();
+        return this.$.auth.signOut();
       },
+
+      _getToken: function() {
+        //_queryParams, _userMeta
+        if (this._queryParams && this._queryParams.hasOwnProperty('token') && this._queryParams.token) {
+          return this._queryParams.token;
+        } else {
+          return null;
+        }
+      }
+/*
       _computeSignedIn: function(user) {
         return !!user;
       },
@@ -159,7 +185,7 @@ Example:
           else return o;
         });
       }
-
+*/
     });
   </script>
 </dom-module>

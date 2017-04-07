@@ -18,25 +18,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <link rel="import" href="../../paper-button/paper-button.html">
     <link rel="import" href="../../paper-input/paper-input.html">
 
-
+<!--
     <link rel="import" href="../uvalib-account-app.html">
+-->
     <link rel="import" href="../uvalib-account-auth.html">
+    <!--
     <link rel="import" href="../uvalib-account-settings.html">
-
+    -->
   </head>
   <body unresolved>
 
         <template is="dom-bind" id="app">
           <uvalib-account-auth auth="{{auth}}" signed-in="{{signedIn}}"></uvalib-account-auth>
+          <!--
           <uvalib-account-settings auth="{{auth}}"></uvalib-account-settings>
+          -->
 
           <p>User signed in: {{signedIn}}</p>
           <p>
             <template is="dom-if" if="[[!signedIn]]">
-              <paper-button on-tap="signIn">Sign In with Netbadge</paper-button>
+              <paper-button on-tap="signIn" raised>Sign In with Netbadge</paper-button>
             </template>
             <template is="dom-if" if="[[signedIn]]">
-              <paper-button on-tap="signOut">Sign Out</paper-button>
+              <paper-button on-tap="signOut" raised>Sign Out</paper-button>
             </template>
           </p>
           <template is="dom-if" if="[[!signedIn]]">
@@ -44,7 +48,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <div>Community Member Sign In Option</div>
               <paper-input label="Login ID" id="login"></paper-input>
               <paper-input label="PIN" id="pin"></paper-input>
-              <paper-button on-tap="commUserSignIn">Non-UVA Sign In</paper-button>
+              <paper-button on-tap="commUserSignIn" raised>Non-UVA Sign In</paper-button>
             </p>
           </template>
 

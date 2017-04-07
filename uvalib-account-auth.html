@@ -127,6 +127,7 @@ Example:
        * @return {Promise} Promise that handles success and failure.
        */
       signOut: function() {
+        this.set('_queryParams',{});
         return this.$.auth.signOut();
       },
 

@@ -17,10 +17,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="uvalib-account-app.html">
 
 <!--
-<link rel="import" href="../uvalib-helper-libs/lodash.html">
--->
-
-<!--
 An element providing a solution to no problem in particular.
 
 Example:
@@ -34,7 +30,7 @@ Example:
 <dom-module id="uvalib-account-auth">
   <template>
     <app-location query-params="{{_queryParams}}"></app-location>
-    <app-localstorage-document key="uvalib-auth" data="{{_userMeta}}"></app-localstorage-document>
+    <app-localstorage-document key="uvalib-auth-user" data="{{_userMeta}}"></app-localstorage-document>
     <firebase-auth id="auth" on-error="_handleError" signed-in="{{signedIn}}" user="{{user}}"></firebase-auth>
   </template>
   <script>
@@ -50,7 +46,8 @@ Example:
         _queryParams: {
           type: Object,
           value: null,
-          notify: true
+          notify: true,
+          observer: '_setUser'
         },
 
         /**
@@ -71,7 +68,7 @@ Example:
         user: {
           type: Object,
           notify: true,
-          value: null
+          computed: '_getUser(_userMeta)'
         },
 
         /**
@@ -128,6 +125,7 @@ Example:
        */
       signOut: function() {
         this.set('_queryParams',{});
+        this.set('_userMeta',{});
         return this.$.auth.signOut();
       },
 
@@ -138,55 +136,24 @@ Example:
         } else {
           return null;
         }
-      }
-/*
-      _computeSignedIn: function(user) {
-        return !!user;
       },
-      _computeAuth: function(app) {
-        return this.app.auth();
-      },
-      __authChanged: function(auth, oldAuth) {
-        if (oldAuth !== auth && this._unsubscribe) {
-          this._unsubscribe();
-          this._unsubscribe = null;
-        }
-        if (this.auth) {
-          this._unsubscribe = this.auth.onAuthStateChanged(function(user) {
-            this.set('user',user);
 
-            if (user) {
-              this.fire('authenticated',user);
-            }
-          }.bind(this), function(err) {
-            this.fire('error', err);
-          }.bind(this));
+      _setUser: function(){
+        // the query parameters have changed, see if there is user info and update the _userMeta object if so
+        if (this._queryParams && this._queryParams.id && this._queryParams.user) {
+          if (!this._userMeta) this.set('_userMeta',{});
+          var user = JSON.parse(this._queryParams.user);
+          if (user.computingId) this.set('_userMeta.computingId', user.computingId);
+          if (user.givenName && user.givenName.length>0) this.set('_userMeta.givenName', user.givenName);
+          if (user.organizationalUnit && user.organizationalUnit.length>0) this.set('_userMeta.orgUnit', user.organizationalUnit);
+          if (user.profile && user.profile.length>0) this.set('_userMeta.profile', user.profile);
         }
       },
-      ready: function(){
-        if (this._queryParams && !_.isEmpty(this._queryParams)) {
-          var token = this._queryParams.token;
-          var cid = this._queryParams.id;
 
-          if (token)
-            this.auth.signInWithCustomToken(token).then(function(){
-              if (this._queryParams.user) {
-                this.set('userMeta',this._userMetaCleanup(JSON.parse(this._queryParams.user).user));
-                console.log('setup the userMeta data from url');
-              }
-              this._queryParams = {};
-            }.bind(this));
-        }
-
+      _getUser: function(){
+        return this._userMeta;
       },
 
-      _userMetaCleanup: function(meta){
-        return _.mapValues(_.omit(meta,['$']), function(o){
-          if (Array.isArray(o) && o.length === 1) return o[0];
-          else return o;
-        });
-      }
-*/
     });
   </script>
 </dom-module>

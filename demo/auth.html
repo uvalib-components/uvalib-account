@@ -18,29 +18,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <link rel="import" href="../../paper-button/paper-button.html">
     <link rel="import" href="../../paper-input/paper-input.html">
 
-<!--
-    <link rel="import" href="../uvalib-account-app.html">
--->
     <link rel="import" href="../uvalib-account-auth.html">
-    <!--
-    <link rel="import" href="../uvalib-account-settings.html">
-    -->
+
   </head>
   <body unresolved>
 
         <template is="dom-bind" id="app">
-          <uvalib-account-auth auth="{{auth}}" signed-in="{{signedIn}}"></uvalib-account-auth>
-          <!--
-          <uvalib-account-settings auth="{{auth}}"></uvalib-account-settings>
-          -->
+          <uvalib-account-auth user="{{user}}" signed-in="{{signedIn}}"></uvalib-account-auth>
 
-          <p>User signed in: {{signedIn}}</p>
+          <p>User signed in: [[signedIn]]</p>
           <p>
             <template is="dom-if" if="[[!signedIn]]">
               <paper-button on-tap="signIn" raised>Sign In with Netbadge</paper-button>
             </template>
             <template is="dom-if" if="[[signedIn]]">
               <paper-button on-tap="signOut" raised>Sign Out</paper-button>
+              <h3>User Info</h3>
+              <dl>
+                <dt>Computing Id</dt><dd>[[user.computingId]]</dd>
+                <dt>GivenName</dt><dd>[[firstOf(user.givenName)]]</dd>
+                <dt>Profile</dt><dd>[[firstOf(user.profile)]]</dd>
+                <dt>Org Unit</dt><dd>[[firstOf(user.orgUnit)]]</dd>
+              </dl>
             </template>
           </p>
           <template is="dom-if" if="[[!signedIn]]">
@@ -69,6 +68,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           var login = document.querySelector('#login').value;
           var pin = document.querySelector('#pin').value;
           document.querySelector('uvalib-account-auth').signInWithPin(login,pin);
+        };
+        app.firstOf = function(arry) {
+          if (Array.isArray(arry) && arry.length>0) return arry[0];
+          else return arry;
         }
 
     </script>

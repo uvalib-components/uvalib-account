@@ -30,7 +30,7 @@ Example:
 <dom-module id="uvalib-account-auth">
   <template>
     <app-location query-params="{{_queryParams}}"></app-location>
-    <app-localstorage-document key="uvalib-auth-user" data="{{_userMeta}}"></app-localstorage-document>
+    <app-localstorage-document  log key="uvalib-auth-user" data="{{_userMeta}}"></app-localstorage-document>
     <firebase-auth id="auth" on-error="_handleError" signed-in="{{signedIn}}" user="{{user}}"></firebase-auth>
   </template>
   <script>
@@ -38,6 +38,11 @@ Example:
       is: 'uvalib-account-auth',
 
       properties: {
+
+        auto: {
+          type: Boolean,
+          value: false
+        },
 
         /**
          * Used to bind the url query from the app-location element for use in getting the
@@ -75,9 +80,9 @@ Example:
          * LDAP info about the user, this is identifying information and should be handled with care
          * the latest firebase token is also stored here
          */
-        _userMeta: {
-          type: Object
-        },
+//        _userMeta: {
+//          type: Object
+//        },
 
         /**
          * Firebase token
@@ -141,18 +146,24 @@ Example:
       _setUser: function(){
         // the query parameters have changed, see if there is user info and update the _userMeta object if so
         if (this._queryParams && this._queryParams.id && this._queryParams.user) {
-          if (!this._userMeta) this.set('_userMeta',{});
+//          if (!this._userMeta) {
+//            this.set('_userMeta',{});
+//          }
           var user = JSON.parse(this._queryParams.user);
-          if (user.computingId) this.set('_userMeta.computingId', user.computingId);
-          if (user.givenName && user.givenName.length>0) this.set('_userMeta.givenName', user.givenName);
-          if (user.organizationalUnit && user.organizationalUnit.length>0) this.set('_userMeta.orgUnit', user.organizationalUnit);
-          if (user.profile && user.profile.length>0) this.set('_userMeta.profile', user.profile);
+          var newUser={};
+          if (user.computingId) newUser.computingId = user.computingId;
+          if (user.givenName && user.givenName.length>0) newUser.givenName = user.givenName;
+          if (user.organizationalUnit && user.organizationalUnit.length>0) newUser.orgUnit = user.organizationalUnit;
+          if (user.profile && user.profile.length>0) newUser.profile = user.profile;
+          this.set('_userMeta',"foobar");
         }
       },
 
       _getUser: function(){
         return this._userMeta;
       },
+
+      ready: function(){}
 
     });
   </script>

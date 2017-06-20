@@ -42,6 +42,10 @@
     "uvalib-social-links": "master",
     "uvalib-theme": "master",
     "uvalib-footer": "master",
-    "polymer": "^1.8.1"
+    "polymer": "^1.8.1",
+    "uvalib-images": "master",
+    "app-storage": "^0.10.0",
+    "iron-icons": "^1.2.1",
+    "uva-footer": "master"
   }
 }

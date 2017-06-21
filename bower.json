@@ -1,54 +1,21 @@
 {
   "name": "uvalib-account",
-  "version": "1.0.7",
   "authors": [
-    "Anonymous <anonymous@example.com>"
+    "Doug Chestnut <dougchestnut@gmail.com>"
   ],
-  "description": "An element providing a solution to no problem in particular.",
+  "description": "An element to handle login/logout and account properties.",
   "keywords": [
     "web-component",
-    "polymer",
-    "seed"
+    "polymer"
   ],
-  "main": "uvalib-auth.html",
+  "main": "uvalib-account-auth.html",
   "license": "http://polymer.github.io/LICENSE.txt",
-  "homepage": "https://github.com/<USERNAME>/seed-element/",
+  "homepage": "https://github.com/uvalib-components/uvalib-account/",
   "ignore": [
     "/.*",
     "/test/"
   ],
   "dependencies": {
     "uvalib-elements": "uvalib-components/uvalib-elements#master"
-  },
-  "devDependencies": {
-    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
-    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
-    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
-  },
-  "resolutions": {
-    "uvalib-elements": "master",
-    "uvalib-alerts": "master",
-    "uvalib-analytics": "master",
-    "uvalib-button": "master",
-    "uvalib-card": "master",
-    "uvalib-events-card": "master",
-    "uvalib-header": "master",
-    "uvalib-hours-card": "master",
-    "uvalib-logos": "master",
-    "uvalib-helper-libs": "master",
-    "uvalib-models": "master",
-    "uvalib-search-box": "master",
-    "uvalib-footer": "master",
-    "uvalib-liame": "master",
-    "uvalib-nav": "master",
-    "uvalib-news-section": "master",
-    "uvalib-skip-nav": "master",
-    "uvalib-theme": "master",
-    "app-storage": "^0.10.0",
-    "lodash": "^4.17.4",
-    "uva-footer": "master",
-    "web-component-tester": "^6.0.0",
-    "test-fixture": "^3.0.0-rc.1"
   }
 }

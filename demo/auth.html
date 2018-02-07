@@ -13,17 +13,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <title>uvalib-account-auth Demo</title>
-    <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
     <link rel="import" href="../../paper-button/paper-button.html">
     <link rel="import" href="../../paper-input/paper-input.html">
+    <link rel="import" href="../../polymer/lib/elements/dom-bind.html">
 
     <link rel="import" href="../uvalib-account-auth.html">
 
   </head>
   <body unresolved>
 
-        <template is="dom-bind" id="app">
+    <dom-bind id="app">
+      <template>
+
           <uvalib-account-auth user="{{user}}" signed-in="{{signedIn}}"></uvalib-account-auth>
 
           <p>User signed in: [[signedIn]]</p>
@@ -51,8 +54,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </p>
           </template>
 
-        </template>
-
+      </template>
+    </dom-bind>
 
 
     <script>

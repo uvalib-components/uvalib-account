@@ -144,18 +144,18 @@ Example:
       },
 
       _setUser: function(){
-        // the query parameters have changed, see if there is user info and update the _userMeta object if so
+        // the query parameters have changed, see if there is user info and update the user object if so
         if (this._queryParams && this._queryParams.id && this._queryParams.user) {
-//          if (!this._userMeta) {
-//            this.set('_userMeta',{});
-//          }
           var user = JSON.parse(this._queryParams.user);
           var newUser={};
           if (user.computingId) newUser.computingId = user.computingId;
           if (user.givenName && user.givenName.length>0) newUser.givenName = user.givenName;
+          if (user.surName && user.surName.length>0) newUser.surName = user.surName;
           if (user.organizationalUnit && user.organizationalUnit.length>0) newUser.orgUnit = user.organizationalUnit;
           if (user.profile && user.profile.length>0) newUser.profile = user.profile;
-          this.set('_userMeta',"foobar");
+          if (user.email && user.email.length>0) newUser.email = user.email;
+          if (user.phone && user.phone.length>0) newUser.phone = user.phone;
+          this.set('user',newUser);
         }
       },
 

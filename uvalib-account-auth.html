@@ -9,7 +9,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../polymer/polymer.html">
-
 <link rel="import" href="../polymerfire/firebase-auth.html">
 <link rel="import" href="../app-route/app-location.html">
 <link rel="import" href="../app-storage/app-localstorage/app-localstorage-document.html">
@@ -80,9 +79,9 @@ Example:
          * LDAP info about the user, this is identifying information and should be handled with care
          * the latest firebase token is also stored here
          */
-//        _userMeta: {
-//          type: Object
-//        },
+        _userMeta: {
+          type: Object
+        },
 
         /**
          * Firebase token
@@ -155,7 +154,7 @@ Example:
           if (user.profile && user.profile.length>0) newUser.profile = user.profile;
           if (user.email && user.email.length>0) newUser.email = user.email;
           if (user.phone && user.phone.length>0) newUser.phone = user.phone;
-          this.set('user',newUser);
+          this.set('_userMeta',newUser);
         }
       },
 

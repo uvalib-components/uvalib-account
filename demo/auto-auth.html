@@ -26,13 +26,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <template is="dom-bind" id="app">
           <uvalib-account-auth auto user="{{user}}" signed-in="{{signedIn}}></uvalib-account-auth>
           <template is="dom-if" if="[[signedIn]]">
-            <h3>User Info</h3>
-            <dl>
-              <dt>Computing Id</dt><dd>[[user.computingId]]</dd>
-              <dt>GivenName</dt><dd>[[firstOf(user.givenName)]]</dd>
-              <dt>Profile</dt><dd>[[firstOf(user.profile)]]</dd>
-              <dt>Org Unit</dt><dd>[[firstOf(user.orgUnit)]]</dd>
-            </dl>
+            <h3>Signed In!</h3>
           </template>
 
         </template>

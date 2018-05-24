@@ -50,8 +50,8 @@ Example:
         _queryParams: {
           type: Object,
           value: null,
-          notify: true,
-          observer: '_setUser'
+          notify: true
+//          observer: '_setUser'
         },
 
         /**
@@ -71,17 +71,17 @@ Example:
          */
         user: {
           type: Object,
-          notify: true,
-          computed: '_getUser(_userMeta)'
+          notify: true
+//          computed: '_getUser(_userMeta)'
         },
 
         /**
          * LDAP info about the user, this is identifying information and should be handled with care
          * the latest firebase token is also stored here
          */
-        _userMeta: {
-          type: Object
-        },
+//        _userMeta: {
+//          type: Object
+//        },
 
         /**
          * Firebase token
@@ -142,6 +142,7 @@ Example:
         }
       },
 
+/*
       _setUser: function(){
         // the query parameters have changed, see if there is user info and update the user object if so
         if (this._queryParams && this._queryParams.id && this._queryParams.user) {
@@ -161,7 +162,7 @@ Example:
       _getUser: function(){
         return this._userMeta;
       },
-
+*/
       ready: function(){}
 
     });

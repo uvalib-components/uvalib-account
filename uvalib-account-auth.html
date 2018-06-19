@@ -1,137 +1,124 @@
-<!--
-@license
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
-<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../polymerfire/firebase-auth.html">
 <link rel="import" href="../app-route/app-location.html">
 <link rel="import" href="../app-storage/app-localstorage/app-localstorage-document.html">
-
 <link rel="import" href="uvalib-account-app.html">
-
-<!--
-Simple authentication helper. Makes it easy to authenticate against Netbade and Firebase
-
-Example:
-
-    <uvalib-account-auth></uvalib-account-auth>
-
-@demo demo/auth.html
-@hero hero.svg
--->
 
 <dom-module id="uvalib-account-auth">
   <template>
     <app-location query-params="{{_queryParams}}"></app-location>
     <firebase-auth id="auth" on-error="_handleError" signed-in="{{signedIn}}" user="{{user}}"></firebase-auth>
   </template>
+
   <script>
-    Polymer({
-      is: 'uvalib-account-auth',
+    /**
+     * `uvalib-account-auth`
+     *
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/auth.html
+     */
+    class UvalibAccountAuth extends Polymer.Element {
+      static get is() { return 'uvalib-account-auth'; }
+      static get properties() {
+        return {
+          auto: {
+            type: Boolean,
+            value: false
+          },
 
-      properties: {
+          /**
+           * Used to bind the url query from the app-location element for use in getting the
+           * firebase token and user info from the server.
+           */
+          _queryParams: {
+            type: Object,
+            value: null,
+            notify: true
+          },
 
-        auto: {
-          type: Boolean,
-          value: false
-        },
+          /**
+            * True if the client is authenticated, and false if the client is not
+            * authenticated for Firebase (Library API) use.
+            */
+          signedIn: {
+            type: Boolean,
+            value: false,
+            notify: true
+          },
 
-        /**
-         * Used to bind the url query from the app-location element for use in getting the
-         * firebase token and user info from the server.
-         */
-        _queryParams: {
-          type: Object,
-          value: null,
-          notify: true
-        },
+          /**
+           * The currently-authenticated user with user-related metadata. See
+           * the [`firebase.User`](https://firebase.google.com/docs/reference/js/firebase.User)
+           * documentation for the spec.
+           */
+          user: {
+            type: Object,
+            notify: true
+          },
 
-        /**
-          * True if the client is authenticated, and false if the client is not
-          * authenticated for Firebase (Library API) use.
-          */
-        signedIn: {
-          type: Boolean,
-          value: false,
-          notify: true
-        },
-
-        /**
-         * The currently-authenticated user with user-related metadata. See
-         * the [`firebase.User`](https://firebase.google.com/docs/reference/js/firebase.User)
-         * documentation for the spec.
-         */
-        user: {
-          type: Object,
-          notify: true
-        },
-
-        /**
-         * Firebase token
-         */
-        _fireToken: {
-          type: String,
-          computed: '_getToken(_queryParams)',
-          observer: '_fbSignIn',
-        }
-
-      },
+          /**
+           * Firebase token
+           */
+          _fireToken: {
+            type: String,
+            computed: '_getToken(_queryParams)',
+            observer: '_fbSignIn',
+          }
+        };
+      }
 
       /**
        * Attempts to sign in to firebase with token if not already signed in
        *
        * @return {Promise} Promise that handles success and failure.
        */
-      _fbSignIn: function(){
+      _fbSignIn(){
         if (!this.signedIn && this._fireToken) {
           return this.$.auth.signInWithCustomToken(this._fireToken);
         }
-      },
+      }
 
       /**
        * Redirects the user to authenticate with UVA Netbadge, which will redirect to the current url with a token and user info
        */
-      signInWithNetbadge: function(){
+      signInWithNetbadge(){
         if (!this.signedIn) {
           window.location = "https://api.library.virginia.edu/fireauth/hello.js?dest="+encodeURIComponent(window.location.href.split('?')[0]);
         }
-      },
+      }
+
       /**
        * Redirects the user to authenticate with a UVA Library PIN, limited attempts, then redirects to the current url with a token and user info
        */
-      signInWithPin: function(uid, pin){
+      signInWithPin(uid, pin){
         if (!this.signedIn) {
           window.location = "https://api.library.virginia.edu/commuser/hello.js?dest="+encodeURIComponent(window.location.href.split('?')[0])+"&login="+encodeURIComponent(uid)+"&pin="+encodeURIComponent(pin);
         }
-      },
+      }
 
       /**
        * Unauthenticates a Firebase client.
        *
        * @return {Promise} Promise that handles success and failure.
        */
-      signOut: function() {
+      signOut() {
         this.set('_queryParams',{});
         return this.$.auth.signOut();
-      },
+      }
 
-      _getToken: function() {
+      _getToken() {
         //_queryParams
         if (this._queryParams && this._queryParams.hasOwnProperty('token') && this._queryParams.token) {
           return this._queryParams.token;
         } else {
           return null;
         }
-      },
+      }
 
-      ready: function(){}
+    }
 
-    });
+    window.customElements.define(UvalibAccountAuth.is, UvalibAccountAuth);
   </script>
 </dom-module>

@@ -16,11 +16,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="uvalib-account-app.html">
 
 <!--
-An element providing a solution to no problem in particular.
+Simple authentication helper. Makes it easy to authenticate against Netbade and Firebase
 
 Example:
 
-    <uvalib-auth></uvalib-auth>
+    <uvalib-account-auth></uvalib-account-auth>
 
 @demo demo/auth.html
 @hero hero.svg
@@ -29,7 +29,6 @@ Example:
 <dom-module id="uvalib-account-auth">
   <template>
     <app-location query-params="{{_queryParams}}"></app-location>
-    <app-localstorage-document  log key="uvalib-auth-user" data="{{_userMeta}}"></app-localstorage-document>
     <firebase-auth id="auth" on-error="_handleError" signed-in="{{signedIn}}" user="{{user}}"></firebase-auth>
   </template>
   <script>
@@ -51,7 +50,6 @@ Example:
           type: Object,
           value: null,
           notify: true
-//          observer: '_setUser'
         },
 
         /**
@@ -72,16 +70,7 @@ Example:
         user: {
           type: Object,
           notify: true
-//          computed: '_getUser(_userMeta)'
         },
-
-        /**
-         * LDAP info about the user, this is identifying information and should be handled with care
-         * the latest firebase token is also stored here
-         */
-//        _userMeta: {
-//          type: Object
-//        },
 
         /**
          * Firebase token
@@ -129,12 +118,11 @@ Example:
        */
       signOut: function() {
         this.set('_queryParams',{});
-        this.set('_userMeta',{});
         return this.$.auth.signOut();
       },
 
       _getToken: function() {
-        //_queryParams, _userMeta
+        //_queryParams
         if (this._queryParams && this._queryParams.hasOwnProperty('token') && this._queryParams.token) {
           return this._queryParams.token;
         } else {
@@ -142,27 +130,6 @@ Example:
         }
       },
 
-/*
-      _setUser: function(){
-        // the query parameters have changed, see if there is user info and update the user object if so
-        if (this._queryParams && this._queryParams.id && this._queryParams.user) {
-          var user = JSON.parse(this._queryParams.user);
-          var newUser={};
-          if (user.computingId) newUser.computingId = user.computingId;
-          if (user.givenName && user.givenName.length>0) newUser.givenName = user.givenName;
-          if (user.surName && user.surName.length>0) newUser.surName = user.surName;
-          if (user.organizationalUnit && user.organizationalUnit.length>0) newUser.orgUnit = user.organizationalUnit;
-          if (user.profile && user.profile.length>0) newUser.profile = user.profile;
-          if (user.email && user.email.length>0) newUser.email = user.email;
-          if (user.phone && user.phone.length>0) newUser.phone = user.phone;
-          this.set('_userMeta',newUser);
-        }
-      },
-
-      _getUser: function(){
-        return this._userMeta;
-      },
-*/
       ready: function(){}
 
     });

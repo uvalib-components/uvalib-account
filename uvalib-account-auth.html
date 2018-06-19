@@ -1,7 +1,6 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../polymerfire/firebase-auth.html">
 <link rel="import" href="../app-route/app-location.html">
-<link rel="import" href="../app-storage/app-localstorage/app-localstorage-document.html">
 <link rel="import" href="uvalib-account-app.html">
 
 <dom-module id="uvalib-account-auth">
@@ -45,7 +44,8 @@
           signedIn: {
             type: Boolean,
             value: false,
-            notify: true
+            notify: true,
+            reflectToAttribute: true
           },
 
           /**

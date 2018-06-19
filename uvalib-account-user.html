@@ -1,0 +1,63 @@
+<link rel="import" href="uvalib-account-auth.html">
+<link rel="import" href="../polymerfire/firebase-document.html">
+<link rel="import" href="../app-storage/app-indexeddb-mirror/app-indexeddb-mirror.html">
+
+<dom-module id="uvalib-account-user">
+  <template>
+      <firebase-document id="doc" path="[[_createPath(user)]]" data="{{_userData}}"></firebase-document>
+      <app-indexeddb-mirror key="lib-user-data" data="{{_userData}}" persisted-data="{{userData}}"></app-indexeddb-mirror>
+  </template>
+
+  <script>
+    /**
+     * `uvalib-account-user`
+     *
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class UvalibAccountUser extends UvalibAccountAuth {
+      static get is() { return 'uvalib-account-user'; }
+      static get properties() {
+        return Object.assign(super.properties,{
+          _userData: Object,
+          userData: {
+            type: Object,
+            notify: true
+          }
+        });
+      }
+//      static get observers() {
+//        return [
+//          '_getUserData(user)'
+//        ]
+//      }
+      //Concat the this elements template with the parents
+      static get template() {
+        var parentTemplate = UvalibAccountAuth.template.cloneNode(true);
+        var childTemplate = Polymer.DomModule.import('uvalib-account-user', 'template');
+        parentTemplate.content.insertBefore(childTemplate.content,null);
+        return parentTemplate;
+      }
+//      _getUserData(){
+//        if (this.user) {
+//          var path = this._createPath(this.user);
+//          this.shadowRoot.getElementById('doc').getStoredValue(path)
+//                      .then(function(obj){
+//
+//                      }.bind(this));
+//        }
+//      }
+      _createPath(user){
+        if (user)
+          return "/users/"+user.uid;
+        else {
+          return null;
+        }
+      }
+    }
+
+    window.customElements.define(UvalibAccountUser.is, UvalibAccountUser);
+  </script>
+</dom-module>

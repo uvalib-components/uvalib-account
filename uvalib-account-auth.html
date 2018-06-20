@@ -94,7 +94,7 @@
 
       _autoSignIn(){
         if (this.statusKnown && this.auto && !this.signedIn) {
-          setTimeout(this.signInWithNetbadge,3000);
+          this.signInWithNetbadge();
         }
       }
 

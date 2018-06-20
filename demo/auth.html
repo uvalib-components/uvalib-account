@@ -14,64 +14,43 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <title>uvalib-account-auth Demo</title>
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    <link rel="import" href="../../paper-button/paper-button.html">
-    <link rel="import" href="../../paper-input/paper-input.html">
     <link rel="import" href="../../polymer/lib/elements/dom-bind.html">
+
+    <link rel="import" href="../../iron-localstorage/iron-localstorage.html">
+    <link rel="import" href="../../paper-button/paper-button.html">
+    <link rel="import" href="../../paper-toggle-button/paper-toggle-button.html">
+    <link rel="import" href="../../paper-input/paper-input.html">
 
     <link rel="import" href="../uvalib-account-auth.html">
 
+    <custom-style><style is="custom-style" include="demo-pages-shared-styles"></style></custom-style>
   </head>
   <body unresolved>
 
-    <dom-bind id="app">
+    <demo-snippet>
       <template>
 
-          <uvalib-account-auth user="{{user}}" signed-in="{{signedIn}}"></uvalib-account-auth>
+        <dom-bind id="app">
+          <template>
 
-          <p>User signed in: [[signedIn]]</p>
-          <p>
-            <template is="dom-if" if="[[!signedIn]]">
-              <paper-button on-tap="signIn" raised>Sign In with Netbadge</paper-button>
-            </template>
-            <template is="dom-if" if="[[signedIn]]">
-              <paper-button on-tap="signOut" raised>Sign Out</paper-button>
-            </template>
-          </p>
-          <!--
-          <template is="dom-if" if="[[!signedIn]]">
-            <p>
-              <div>Community Member Sign In Option</div>
-              <paper-input label="Login ID" id="login"></paper-input>
-              <paper-input label="PIN" id="pin"></paper-input>
-              <paper-button on-tap="commUserSignIn" raised>Non-UVA Sign In</paper-button>
-            </p>
+              <iron-localstorage name="autoload-account-auth" value="{{auto}}"></iron-localstorage>
+              <uvalib-account-auth id="auth" auto="[[auto]]" user="{{user}}" signed-in="{{signedIn}}"></uvalib-account-auth>
+
+              <p>User signed in: [[signedIn]]</p>
+              <paper-toggle-button checked="{{auto}}">Auto authenticate?</paper-toggle-button>
+              <p>
+                <paper-button onclick="auth.signInWithNetbadge()" raised hidden="[[signedIn]]">Sign In with Netbadge</paper-button>
+                <paper-button onclick="auth.signOut()" raised hidden="[[!signedIn]]">Sign Out</paper-button>
+              </p>
+
           </template>
-        -->
+        </dom-bind>
+
       </template>
-    </dom-bind>
-
-
-    <script>
-
-        var app = document.querySelector('#app');
-        app.signIn = function(){
-          document.querySelector('uvalib-account-auth').signInWithNetbadge();
-        };
-        app.signOut = function(){
-          document.querySelector('uvalib-account-auth').signOut();
-        };
-        app.commUserSignIn = function(){
-          var login = document.querySelector('#login').value;
-          var pin = document.querySelector('#pin').value;
-          document.querySelector('uvalib-account-auth').signInWithPin(login,pin);
-        };
-        app.firstOf = function(arry) {
-          if (Array.isArray(arry) && arry.length>0) return arry[0];
-          else return arry;
-        }
-
-    </script>
+    </demo-snippet>
 
   </body>
 </html>

@@ -15,7 +15,7 @@
      *
      * @customElement
      * @polymer
-     * @demo demo/index.html
+     * @demo demo/auth-user-info.html
      */
     class UvalibAccountUser extends UvalibAccountAuth {
       static get is() { return 'uvalib-account-user'; }
@@ -24,15 +24,11 @@
           _userData: Object,
           userData: {
             type: Object,
-            notify: true
+            notify: true,
+            value: function(){return {};}
           }
         });
       }
-//      static get observers() {
-//        return [
-//          '_getUserData(user)'
-//        ]
-//      }
       //Concat the this elements template with the parents
       static get template() {
         var parentTemplate = UvalibAccountAuth.template.cloneNode(true);
@@ -40,15 +36,6 @@
         parentTemplate.content.insertBefore(childTemplate.content,null);
         return parentTemplate;
       }
-//      _getUserData(){
-//        if (this.user) {
-//          var path = this._createPath(this.user);
-//          this.shadowRoot.getElementById('doc').getStoredValue(path)
-//                      .then(function(obj){
-//
-//                      }.bind(this));
-//        }
-//      }
       _createPath(user){
         if (user)
           return "/users/"+user.uid;

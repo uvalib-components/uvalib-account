@@ -26,6 +26,11 @@
             type: Object,
             notify: true,
             value: function(){return {};}
+          },
+          libStaff: {
+            type: Boolean,
+            notify: true,
+            computed: '_isStaff(userData)'
           }
         });
       }
@@ -42,6 +47,10 @@
         else {
           return null;
         }
+      }
+      _isStaff(userData){
+        if (userData && userData.LDAP && userData.LDAP.uvaDisplayDepartment)
+          return userData.LDAP.uvaDisplayDepartment === "University of Virginia Library";
       }
     }
 

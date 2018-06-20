@@ -6,7 +6,7 @@
 <dom-module id="uvalib-account-auth">
   <template>
     <app-location query-params="{{_queryParams}}"></app-location>
-    <firebase-auth id="auth" on-error="_handleError" signed-in="{{signedIn}}" user="{{user}}"></firebase-auth>
+    <firebase-auth id="auth" on-error="_handleError" signed-in="{{signedIn}}" user="{{user}}" status-known="{{statusKnown}}"></firebase-auth>
   </template>
 
   <script>
@@ -22,6 +22,12 @@
       static get is() { return 'uvalib-account-auth'; }
       static get properties() {
         return {
+
+          statusKnown: {
+            type: Boolean,
+            notify: true
+          },
+
           auto: {
             type: Boolean,
             value: false
@@ -69,6 +75,12 @@
         };
       }
 
+      static get observers() {
+        return [
+          '_autoSignIn(statusKnown, signedIn)'
+        ]
+      }
+
       /**
        * Attempts to sign in to firebase with token if not already signed in
        *
@@ -77,6 +89,12 @@
       _fbSignIn(){
         if (!this.signedIn && this._fireToken) {
           return this.$.auth.signInWithCustomToken(this._fireToken);
+        }
+      }
+
+      _autoSignIn(){
+        if (this.statusKnown && this.auto && !this.signedIn) {
+          setTimeout(this.signInWithNetbadge,3000);
         }
       }
 

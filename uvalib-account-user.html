@@ -122,6 +122,13 @@
         }
         return contactInfo;
       }
+      writeRequest(formSubmission) {
+        this._requestDetails = this.requestDetails = {
+          "uid": this.userData.uid,
+          "timestamp": Date.now(),
+          "submission": formSubmission
+        };
+      }
     }
 
     window.customElements.define(UvalibAccountUser.is, UvalibAccountUser);

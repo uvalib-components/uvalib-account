@@ -6,6 +6,9 @@
   <template>
       <firebase-document id="doc" path="[[_createPath(user)]]" data="{{_userData}}"></firebase-document>
       <app-indexeddb-mirror key="lib-user-data" data="{{_userData}}" persisted-data="{{userData}}"></app-indexeddb-mirror>
+      <firebase-document id="libRequest" path="[[_createRequest(user)]]" data="{{_requestDetails}}"></firebase-document>
+      <firebase-document id="libRequestCopy" path="[[_createPatronCopy(user)]]" data="{{_requestDetails}}"></firebase-document>
+      <app-indexeddb-mirror key="lib-user-request-data" data="{{_requestDetails}}" persisted-data="{{requestDetails}}"></app-indexeddb-mirror>
   </template>
 
   <script>
@@ -23,6 +26,12 @@
         return Object.assign(super.properties,{
           _userData: Object,
           userData: {
+            type: Object,
+            notify: true,
+            value: function(){return {};}
+          },
+          _requestDetails: Object,
+          requestDetails: {
             type: Object,
             notify: true,
             value: function(){return {};}
@@ -53,6 +62,20 @@
       _createPath(user){
         if (user)
           return "/users/"+user.uid;
+        else {
+          return null;
+        }
+      }
+      _createRequest(user){
+        if (user)
+          return "/requests/"+user.uid;
+        else {
+          return null;
+        }
+      }
+      _createPatronCopy(user){
+        if (user)
+          return "/users/"+user.uid+"/requests";
         else {
           return null;
         }

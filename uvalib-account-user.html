@@ -6,8 +6,8 @@
   <template>
       <firebase-document id="doc" path="[[_createPath(user)]]" data="{{_userData}}"></firebase-document>
       <app-indexeddb-mirror key="lib-user-data" data="{{_userData}}" persisted-data="{{userData}}"></app-indexeddb-mirror>
-      <firebase-document id="libRequest" path="[[_createRequest(user)]]" data="{{_requestDetails}}"></firebase-document>
-      <firebase-document id="libRequestCopy" path="[[_createPatronCopy(user)]]" data="{{_requestDetails}}"></firebase-document>
+      <firebase-document id="libReq" path="[[_createRequest(user)]]" data="{{_requestDetails}}"></firebase-document>
+      <firebase-document id="libReqPatronCopy" path="[[_createPatronCopy(user)]]" data="{{_requestDetails}}"></firebase-document>
       <app-indexeddb-mirror key="lib-user-request-data" data="{{_requestDetails}}" persisted-data="{{requestDetails}}"></app-indexeddb-mirror>
   </template>
 
@@ -125,7 +125,7 @@
       writeRequest(formSubmission) {
         this._requestDetails = this.requestDetails = {
           "uid": this.userData.uid,
-          "timestamp": Date.now(),
+          "timestamp": {".sv": "timestamp"},
           "submission": formSubmission
         };
       }

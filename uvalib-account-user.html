@@ -124,7 +124,7 @@
       }
       writeRequest(formSubmission) {
         this._requestDetails = this.requestDetails = {
-          "uid": this.userData.uid,
+          "uid": (this.userData.uid) ? this.userData.uid : null,
           "timestamp": {".sv": "timestamp"},
           "submission": formSubmission
         };

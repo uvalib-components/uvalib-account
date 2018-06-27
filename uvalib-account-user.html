@@ -8,9 +8,7 @@
       <firebase-document id="doc" path="[[_createPath(user)]]" data="{{_userData}}"></firebase-document>
       <app-indexeddb-mirror key="lib-user-data" data="{{_userData}}" persisted-data="{{userData}}"></app-indexeddb-mirror>
       <firebase-document id="libReq" path="/requests" data="{{_requestDetails}}"></firebase-document>
-      <template is="dom-if" if="[[_isMemberUva(user)]]">
-        <firebase-document id="libReqPatronCopy" path="[[_createRequestCopy(user)]]" data="{{_requestDetails}}"></firebase-document>
-      </template>
+      <firebase-document id="libReqPatronCopy" path="[[_createRequestCopyPath(user)]]" data="{{_requestDetails}}"></firebase-document>
       <app-indexeddb-mirror key="lib-user-request-data" data="{{_requestDetails}}" persisted-data="{{requestDetails}}"></app-indexeddb-mirror>
   </template>
 
@@ -69,15 +67,12 @@
           return null;
         }
       }
-      _createRequestCopy(user){
+      _createRequestCopyPath(user){
         if (user)
           return "/users/"+user.uid+"/requests";
         else {
           return null;
         }
-      }
-      _isMemberUva(user){
-        return (user && user.uid);
       }
       _isStaff(userData){
         if (userData && userData.LDAP && userData.LDAP.uvaDisplayDepartment)
@@ -122,9 +117,10 @@
         return contactInfo;
       }
       saveRequest(formSubmission) {
+        this._requestDetails = this._requestDetails = {};
         var uuid = lil.uuid();
-        this.requestDetails[uuid] = {
-          "uid": (this.userData.LDAP && this.userData.LDAP.uid) ? this.userData.LDAP.uid : null,
+        this._requestDetails[uuid] = this.requestDetails[uuid] = {
+          "uid": (this.user && this.user.uid) ? this.user.uid : null,
           "timestamp": {".sv": "timestamp"},
           "submission": JSON.stringify(formSubmission)
         };

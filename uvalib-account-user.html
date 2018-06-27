@@ -7,8 +7,10 @@
   <template>
       <firebase-document id="doc" path="[[_createPath(user)]]" data="{{_userData}}"></firebase-document>
       <app-indexeddb-mirror key="lib-user-data" data="{{_userData}}" persisted-data="{{userData}}"></app-indexeddb-mirror>
-      <firebase-document id="libReq" path="[[_createRequest(user)]]" data="{{_requestDetails}}"></firebase-document>
-      <firebase-document id="libReqPatronCopy" path="[[_createPatronCopy(user)]]" data="{{_requestDetails}}"></firebase-document>
+      <firebase-document id="libReq" path="/requests" data="{{_requestDetails}}"></firebase-document>
+      <template is="dom-if" if="[[_isMemberUva(user)]]">
+        <firebase-document id="libReqPatronCopy" path="[[_createRequestCopy(user)]]" data="{{_requestDetails}}"></firebase-document>
+      </template>
       <app-indexeddb-mirror key="lib-user-request-data" data="{{_requestDetails}}" persisted-data="{{requestDetails}}"></app-indexeddb-mirror>
   </template>
 
@@ -67,19 +69,15 @@
           return null;
         }
       }
-      _createRequest(user){
-        if (user)
-          return "/requests";
-        else {
-          return null;
-        }
-      }
-      _createPatronCopy(user){
+      _createRequestCopy(user){
         if (user)
           return "/users/"+user.uid+"/requests";
         else {
           return null;
         }
+      }
+      _isMemberUva(user){
+        return (user && user.uid);
       }
       _isStaff(userData){
         if (userData && userData.LDAP && userData.LDAP.uvaDisplayDepartment)
@@ -130,6 +128,7 @@
           "timestamp": {".sv": "timestamp"},
           "submission": JSON.stringify(formSubmission)
         };
+        console.log('request:');
         console.log(this._requestDetails);
       }
     }

@@ -121,10 +121,10 @@
         }
         return contactInfo;
       }
-      writeRequest(formSubmission) {
+      saveRequest(formSubmission) {
         var uuid = lil.uuid();
         this.requestDetails[uuid] = {
-          "uid": (this.userData.uid) ? this.userData.uid : null,
+          "uid": (this.userData.LDAP && this.userData.LDAP.uid) ? this.userData.LDAP.uid : null,
           "timestamp": {".sv": "timestamp"},
           "submission": JSON.stringify(formSubmission)
         };

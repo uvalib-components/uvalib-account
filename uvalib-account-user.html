@@ -125,7 +125,7 @@
       }
       writeRequest(formSubmission) {
         var uuid = lil.uuid();
-        this._requestDetails[uuid] = this.requestDetails[uuid] = {
+        this._requestDetails[uuid] = {
           "uid": (this.userData.uid) ? this.userData.uid : null,
           "timestamp": {".sv": "timestamp"},
           "submission": JSON.stringify(formSubmission)

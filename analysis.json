@@ -7066,11 +7066,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 62,
+              "line": 63,
               "column": 6
             },
             "end": {
-              "line": 68,
+              "line": 69,
               "column": 7
             }
           },
@@ -7087,11 +7087,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 69,
+              "line": 70,
               "column": 6
             },
             "end": {
-              "line": 75,
+              "line": 76,
               "column": 7
             }
           },
@@ -7108,11 +7108,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 76,
+              "line": 77,
               "column": 6
             },
             "end": {
-              "line": 79,
+              "line": 80,
               "column": 7
             }
           },
@@ -7129,11 +7129,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 80,
+              "line": 81,
               "column": 6
             },
             "end": {
-              "line": 117,
+              "line": 118,
               "column": 7
             }
           },
@@ -7150,11 +7150,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 118,
+              "line": 119,
               "column": 6
             },
             "end": {
-              "line": 128,
+              "line": 129,
               "column": 7
             }
           },
@@ -8105,16 +8105,20 @@
         {
           "url": "demo/auth-user-info.html",
           "description": ""
+        },
+        {
+          "url": "demo/auth-user-props.html",
+          "description": ""
         }
       ],
       "metadata": {},
       "sourceRange": {
         "start": {
-          "line": 23,
+          "line": 24,
           "column": 4
         },
         "end": {
-          "line": 129,
+          "line": 130,
           "column": 5
         }
       },

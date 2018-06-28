@@ -12,6 +12,7 @@
     <link rel="import" href="../../paper-button/paper-button.html">
     <link rel="import" href="../../paper-toggle-button/paper-toggle-button.html">
     <link rel="import" href="../../paper-input/paper-input.html">
+    <link rel="import" href="../../paper-slider/paper-slider.html">
 
     <link rel="import" href="../uvalib-account-user.html">
     <custom-style><style is="custom-style" include="demo-pages-shared-styles"></style></custom-style>
@@ -31,7 +32,9 @@
                 <paper-button onclick="accountuser.signOut()" hidden$="[[!signedIn]]" raised>Sign Out</paper-button>
               </p>
 
-              <paper-toggle-button checked="{{userData.toggled}}">Toggle</paper-toggle-button>
+              <paper-toggle-button checked="{{userData.toggled}}" disabled="[[!signedIn]]">Toggle</paper-toggle-button>
+              <paper-slider value="{{userData.rangeValue}}" disabled="[[!signedIn]]"></paper-slider>
+              <textarea value="{{userData.textValue::input}}" disabled="[[!signedIn]]"></textarea>
           </template>
         </dom-bind>
       </template>

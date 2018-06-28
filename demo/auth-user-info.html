@@ -22,7 +22,7 @@
         <dom-bind id="app">
           <template>
 
-              <uvalib-account-user id="accountuser" signed-in="{{signedIn}}" user-data="{{userData}}"></uvalib-account-user>
+              <uvalib-account-user id="accountuser" signed-in="{{signedIn}}" user-data="{{userData}}" contact-info="{{contactInfo}}"></uvalib-account-user>
 
               <p>User signed in: [[signedIn]]</p>
               <p>
@@ -30,6 +30,7 @@
                 <paper-button onclick="accountuser.signOut()" hidden$="[[!signedIn]]" raised>Sign Out</paper-button>
               </p>
               <textarea>[[makeJson(userData)]]</textarea>
+              <textarea>[[makeJson(contactInfo)]]</textarea>
           </template>
         </dom-bind>
       </template>

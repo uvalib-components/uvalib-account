@@ -120,9 +120,9 @@
         return contactInfo;
       }
       saveRequest(formSubmission) {
-        this._requestDetails = this._requestDetails = {};
+        this.requestDetails = {};
         var uuid = lil.uuid();
-        this._requestDetails[uuid] = this.requestDetails[uuid] = {
+        this.requestDetails[uuid] = {
           "uid": (this.user && this.user.uid) ? this.user.uid : null,
           "timestamp": {".sv": "timestamp"},
           "submission": JSON.stringify(formSubmission)

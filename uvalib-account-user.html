@@ -77,7 +77,9 @@
       }
       _isStaff(userData){
         if (userData && userData.LDAP && userData.LDAP.uvaDisplayDepartment)
-          return userData.LDAP.uvaDisplayDepartment === "University of Virginia Library";
+          return (userData.LDAP.uvaDisplayDepartment === "University of Virginia Library"
+                  || userData.LDAP.uvaDisplayDepartment.toLowerCase().includes("univ librarian")
+                  || userData.LDAP.uvaDisplayDepartment.toLowerCase().includes("lb-"));
       }
       _getContactInfo(userData){
         var contactInfo = {computing_id: '', name: '', email: '', phone: '', affiliation: '', department_school: ''};

@@ -7,8 +7,8 @@
   <template>
       <firebase-document id="doc" path="[[_createPath(user)]]" data="{{_userData}}"></firebase-document>
       <app-indexeddb-mirror key="lib-user-data" data="{{_userData}}" persisted-data="{{userData}}"></app-indexeddb-mirror>
-      <firebase-document id="libReq" path="/requests" data="{{_requestDetails}}"></firebase-document>
-      <firebase-document id="libReqPatronCopy" path="[[_createRequestCopyPath(user)]]" data="{{_requestDetails}}"></firebase-document>
+      <firebase-document id="libReq" path="[[_createRequestPath(_requestUuid)]]" data="{{_requestDetails}}"></firebase-document>
+      <firebase-document id="libReqPatronCopy" path="[[_createUserRequestPath(_requestUuid,user)]]" data="{{_requestDetails}}"></firebase-document>
       <app-indexeddb-mirror key="lib-user-request-data" data="{{_requestDetails}}" persisted-data="{{requestDetails}}"></app-indexeddb-mirror>
   </template>
 
@@ -51,6 +51,9 @@
             type: Object,
             notify: true,
             computed: '_getContactInfo(userData)'
+          },
+          _requestUuid: {
+            type: String
           }
         });
       }
@@ -68,10 +71,17 @@
           return null;
         }
       }
-      _createRequestCopyPath(user){
-        if (user)
-          return "/users/"+user.uid+"/requests";
+      _createRequestPath(_requestUuid){
+        if (_requestUuid != '')
+          return "/requests/"+_requestUuid;
         else {
+          return null;
+        }
+      }
+      _createUserRequestPath(_requestUuid,user){
+        if (user && _requestUuid != '') {
+          return "/users/"+user.uid+"/requests/"+_requestUuid;
+        } else {
           return null;
         }
       }
@@ -120,15 +130,12 @@
         return contactInfo;
       }
       saveRequest(formSubmission) {
-        this.requestDetails = {};
-        var uuid = lil.uuid();
-        this.requestDetails[uuid] = {
+        this._requestUuid = lil.uuid();
+        this._requestDetails = {
           "uid": (this.user && this.user.uid) ? this.user.uid : null,
           "timestamp": {".sv": "timestamp"},
           "submission": JSON.stringify(formSubmission)
         };
-        console.log('request:');
-        console.log(this._requestDetails);
       }
     }
 

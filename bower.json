@@ -22,6 +22,11 @@
   "resolutions": {
     "polymer": "^2.5.0",
     "webcomponentsjs": "^1.1.1",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "iron-flex-layout": "^2.0.3",
+    "paper-styles": "^2.0.0",
+    "iron-a11y-keys-behavior": "^v2.0.0",
+    "iron-collapse": "^2.2.1",
+    "iron-resizable-behavior": "^v2.0.0"
   }
 }

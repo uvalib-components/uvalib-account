@@ -139,13 +139,12 @@
       _processDepartmentSchool(ldapValue) {
         // Strip out that initial code at the start of the department
         var dept = ldapValue.replace(/^[A-Z0-9]{2}:/,'');
-        var dept = 'AS-Astronomy';
         // Modified to use new community LDAP values to best align to Library departments...
         if (dept.indexOf('AR-') > -1) {
           if (dept.indexOf('Arch History') > -1) dept = 'Architectural History';
           if (dept.indexOf('Landscape') > -1) dept = 'Landscape Architecture';
           if (dept.indexOf('AR-') > -1) dept = 'Architecture';
-        } else if (dept.indexOf('AS-' > -1)) {
+        } else if (dept.indexOf('AS-') > -1) {
           if (dept.indexOf('African') > -1) dept = 'African-American and African Studies';
           if (dept.indexOf('Biol ') > -1) dept = 'Biology';
           if ((dept.indexOf('E Asian') > -1) || (dept.indexOf('East Asian') > -1)) dept = 'East Asian';
@@ -158,15 +157,15 @@
           if (dept.indexOf('Religion ') > -1) dept = 'Religious Studies';
           if (dept.indexOf('Slavic') > -1) dept = 'Slavic';
           if (dept.indexOf('Spanish') > -1) dept = 'Spanish, Italian, and Portuguese';
-          if (dept.indexOf('Women') > -1) dept = 'Women, Gender & Sexuality';
-          if (dept.indexOf('AS-') > -1) dept.replace(/AS-/,'');
-        } else if (dept.indexOf('BA-' > -1)) {
+          if (dept.indexOf('Women') > -1) dept = 'Women, Gender, & Sexuality';
+          if (dept.indexOf('AS-') > -1) dept = dept.replace(/^AS-/,''); // necessary for getting Biology, Chemistry, etc.
+        } else if (dept.indexOf('BA-') > -1) {
           dept = 'Batten School';
-        } else if (dept.indexOf('MC-' > -1)) {
+        } else if (dept.indexOf('MC-') > -1) {
           dept = 'Commerce';
-        } else if (dept.indexOf('CU-' > -1)) {
+        } else if (dept.indexOf('CU-') > -1) {
           dept = 'Education';
-        } else if (dept.indexOf('EN-' > -1)) {
+        } else if (dept.indexOf('EN-') > -1) {
           if (dept.indexOf('Biomed ') > -1) dept = 'Biomedical Engineering';
           if (dept.indexOf('Chem ') > -1) dept = 'Chemical Engineering';
           if (dept.indexOf('Environment') > -1) dept = 'Civil and Environmental Engineering';
@@ -175,9 +174,11 @@
           if (dept.indexOf('Mat Sci') > -1) dept = 'Materials Science and Engineering';
           if (dept.indexOf('Mech/Aero') > -1) dept = 'Mechanical and Aerospace Engineering';
           if (dept.indexOf('Society') > -1) dept = 'Science, Technology and Society';
-          if (dept.indexOf('EN-') > -1) dept.replace(/^EN\-/,'');
+          if (dept.indexOf('EN-') > -1) dept = 'Engineering';
+        } else if (dept.indexOf('LB-') > -1) {
+          dept = 'Library';
         }
-        console.log(dept);
+        //console.log(dept);
         return dept;
       }
       saveRequest(formSubmission) {

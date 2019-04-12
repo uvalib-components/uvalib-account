@@ -191,11 +191,26 @@
           "timestamp": {".sv": "timestamp"},
           "submission": JSON.stringify(formSubmission)
         };
-        var promises = [];
-        promises.push(firebase.database().ref(this._createRequestPath(this._requestUuid)).set(this._requestDetails));
+        var promises = [], results = {};
+        promises.push(firebase.database().ref(this._createRequestPath(this._requestUuid)).set(this._requestDetails, function(error) {return error;}));
         if (this.user)
-          promises.push(firebase.database().ref(this._createUserRequestPath(this._requestUuid,this.user)).set(this._requestDetails));
-        return Promise.all(promises);
+          promises.push(firebase.database().ref(this._createUserRequestPath(this._requestUuid,this.user)).set(this._requestDetails, function(error) {return error;}));
+        return Promise.all(promises)
+          .then(values => {
+            results.requestPathWrite = true;
+            results.message = '';
+            for (var i=0; i<values.length; i++) {
+              if (values[i] && values[i].error) {
+                results.requestPathWrite = false;
+                results.message += ' '+values[i].error.toString();
+              }
+            }
+            return results;
+          })
+          .catch(error => {
+            console.log(error);
+            return error;
+          });
       }
     }
 

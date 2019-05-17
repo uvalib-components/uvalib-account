@@ -88,7 +88,10 @@
        */
       _fbSignIn(){
         if (!this.signedIn && this._fireToken) {
-          return this.$.auth.signInWithCustomToken(this._fireToken);
+          this._signingIn = true;
+          this.$.auth.signInWithCustomToken(this._fireToken).then(function(){
+              this._signingIn = false;
+          }.bind(this));
         }
       }
 
@@ -102,8 +105,10 @@
        * Redirects the user to authenticate with UVA Netbadge, which will redirect to the current url with a token and user info
        */
       signInWithNetbadge(){
-        if (!this.signedIn) {
+        if (!this.signedIn && !this._signingIn) {
           window.location = "https://api.library.virginia.edu/fireauth/hello.js?dest="+encodeURIComponent(window.location.href.split('?')[0]);
+        } else if (!this.signedIn && this._signingIn) {
+          setTimeout(this.signInWithNetbadge, 2000);
         }
       }
 

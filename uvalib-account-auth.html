@@ -105,10 +105,10 @@
        * Redirects the user to authenticate with UVA Netbadge, which will redirect to the current url with a token and user info
        */
       signInWithNetbadge(){
-        if (!this.signedIn && !this._signingIn) {
+        if (!this.signedIn && !this._signingIn && !this._fireToken) {
           window.location = "https://api.library.virginia.edu/fireauth/hello.js?dest="+encodeURIComponent(window.location.href.split('?')[0]);
-        } else if (!this.signedIn && this._signingIn) {
-          setTimeout(this.signInWithNetbadge, 2000);
+        } else if (!this.signedIn && (this._signingIn||this._fireToken)) {
+          setTimeout(this.signInWithNetbadge, 1000);
         }
       }
 

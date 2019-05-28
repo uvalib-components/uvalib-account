@@ -53,6 +53,10 @@
             notify: true,
             reflectToAttribute: true
           },
+          _signingIn: {
+            type: Boolean,
+            value: false
+          },
 
           /**
            * The currently-authenticated user with user-related metadata. See
@@ -88,9 +92,11 @@
        */
       _fbSignIn(){
         if (!this.signedIn && this._fireToken) {
+console.log("attempt to auth fb token!!!")
           this._signingIn = true;
           this.$.auth.signInWithCustomToken(this._fireToken).then(function(){
               this._signingIn = false;
+console.log("we have a valid token!!!")
           }.bind(this));
         }
       }
@@ -106,8 +112,13 @@
        */
       signInWithNetbadge(){
         if (!this.signedIn && !this._signingIn && !this._fireToken) {
+console.log("redirecting!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+console.log(this.signedIn);
+console.log(this._signingIn);
+console.log(this._fireToken);
           window.location = "https://api.library.virginia.edu/fireauth/hello.js?dest="+encodeURIComponent(window.location.href.split('?')[0]);
         } else if (!this.signedIn && (this._signingIn||this._fireToken)) {
+          this._fbSignIn();
           setTimeout(this.signInWithNetbadge, 1000);
         }
       }

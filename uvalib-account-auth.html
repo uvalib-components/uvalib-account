@@ -111,15 +111,16 @@ console.log("we have a valid token!!!")
        * Redirects the user to authenticate with UVA Netbadge, which will redirect to the current url with a token and user info
        */
       signInWithNetbadge(){
-        if (!this.signedIn && !this._signingIn && !this._fireToken) {
+        if (!this.signedIn && !this._signingIn && !this._fireToken && window.location.href.indexOf('token') == -1) {
 console.log("redirecting!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 console.log(this.signedIn);
 console.log(this._signingIn);
 console.log(this._fireToken);
           window.location = "https://api.library.virginia.edu/fireauth/hello.js?dest="+encodeURIComponent(window.location.href.split('?')[0]);
-        } else if (!this.signedIn && (this._signingIn||this._fireToken)) {
+        } else if (!this.signedIn) { //&& (this._signingIn||this._fireToken)) {
           this._fbSignIn();
-          setTimeout(this.signInWithNetbadge, 1000);
+console.log("wait and try again!!!");
+          setTimeout(this.signInWithNetbadge.bind(this), 1000);
         }
       }
 

@@ -87,11 +87,44 @@
           return null;
         }
       }
+      _getArrayEntry(arr) {
+        if (arr.length < 1) {
+          return "";
+        } else {
+          arr.sort();
+          return arr[0];
+        }
+      }
+      _getPrimaryDepartment(affiliation,depts) {
+        if (Array.isArray(depts)) {
+          if (affiliation === "staff" || affiliation === "faculty") {
+            return this._getArrayEntry(depts.filter(dept => dept.startsWith("E")));
+          } else if (affilation === "student") {
+            var d = depts.filter(dept => dept.startsWith("U")); // uva student
+            if (d.length < 1) { // wise student?
+              d = depts.filter(dept => dept.startsWith("W"));
+            }
+            return this._getArrayEntry(d);
+          } else {
+            return depts[0];
+          }
+        } else {
+          return depts;
+        }
+      }
       _isStaff(userData){
-        if (userData && userData.LDAP && userData.LDAP.uvaDisplayDepartment)
-          return (userData.LDAP.uvaDisplayDepartment === "University of Virginia Library"
-                  || userData.LDAP.uvaDisplayDepartment.toLowerCase().includes("univ librarian")
-                  || userData.LDAP.uvaDisplayDepartment.toLowerCase().includes("lb-"));
+        if (userData && userData.LDAP && userData.LDAP.uvaDisplayDepartment) {
+          if (userData.LDAP.edupersonprimaryaffiliation && (userData.LDAP.edupersonprimaryaffiliation === "staff" || userData.LDAP.edupersonprimaryaffiliation === "faculty")) {
+            var dept = this._getPrimaryDepartment(userData.LDAP.edupersonprimaryaffiliation,userData.LDAP.uvaDisplayDepartment);
+            return (dept === "University of Virginia Library"
+                    || dept.toLowerCase().includes("univ librarian")
+                    || dept.toLowerCase().includes("lb-"));
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
       }
       _getContactInfo(userData){
         var contactInfo = {computing_id: '', name: '', email: '', phone: '', affiliation: '', department_school: '', processed_dept_school: ''};
@@ -112,8 +145,8 @@
               contactInfo.department_school = userData.LDAP.uvaRegistrarSchool;
               contactInfo.processed_dept_school = this._processDepartmentSchool(userData.LDAP.uvaRegistrarSchool);
             } else if (userData.LDAP.uvaDisplayDepartment) {
-              contactInfo.department_school = this._stripInitialDeptCode(userData.LDAP.uvaDisplayDepartment);
-              contactInfo.processed_dept_school = this._processDepartmentSchool(userData.LDAP.uvaDisplayDepartment);
+              contactInfo.department_school = this._stripInitialDeptCode(this._getPrimaryDepartment(userData.LDAP.edupersonprimaryaffiliation,userData.LDAP.uvaDisplayDepartment));
+              contactInfo.processed_dept_school = this._processDepartmentSchool(this._getPrimaryDepartment(userData.LDAP.edupersonprimaryaffiliation,userData.LDAP.uvaDisplayDepartment));
             } else if (userData.LDAP.uvaOracleDeptName) {
               contactInfo.department_school = this._stripInitialDeptCode(userData.LDAP.uvaOracleDeptName);
               contactInfo.processed_dept_school = this._processDepartmentSchool(userData.LDAP.uvaOracleDeptName);
@@ -121,8 +154,8 @@
             contactInfo.phone = (userData.LDAP.mobile) ? userData.LDAP.mobile : '';
           } else {
             if (userData.LDAP.uvaDisplayDepartment) {
-              contactInfo.department_school = this._stripInitialDeptCode(userData.LDAP.uvaDisplayDepartment);
-              contactInfo.processed_dept_school = this._processDepartmentSchool(userData.LDAP.uvaDisplayDepartment);
+              contactInfo.department_school = this._stripInitialDeptCode(this._getPrimaryDepartment(userData.LDAP.edupersonprimaryaffiliation,userData.LDAP.uvaDisplayDepartment));
+              contactInfo.processed_dept_school = this._processDepartmentSchool(this._getPrimaryDepartment(userData.LDAP.edupersonprimaryaffiliation,userData.LDAP.uvaDisplayDepartment));
             } else if (userData.LDAP.uvaOracleDeptName) {
               contactInfo.department_school = this._stripInitialDeptCode(userData.LDAP.uvaOracleDeptName);
               contactInfo.processed_dept_school = this._processDepartmentSchool(userData.LDAP.uvaOracleDeptName);

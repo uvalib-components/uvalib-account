@@ -143,8 +143,8 @@
           }
           if (contactInfo.affiliation.includes('student')) {
             if (userData.LDAP.uvaRegistrarSchool) {
-              contactInfo.department_school = userData.LDAP.uvaRegistrarSchool;
-              contactInfo.processed_dept_school = this._processDepartmentSchool(userData.LDAP.uvaRegistrarSchool);
+              contactInfo.department_school = this._stripInitialDeptCode(this._getPrimaryDepartment(userData.LDAP.edupersonprimaryaffiliation,userData.LDAP.uvaRegistrarSchool));
+              contactInfo.processed_dept_school = this._processDepartmentSchool(contactInfo.department_school);
             } else if (userData.LDAP.uvaDisplayDepartment) {
               contactInfo.department_school = this._stripInitialDeptCode(this._getPrimaryDepartment(userData.LDAP.edupersonprimaryaffiliation,userData.LDAP.uvaDisplayDepartment));
               contactInfo.processed_dept_school = this._processDepartmentSchool(this._getPrimaryDepartment(userData.LDAP.edupersonprimaryaffiliation,userData.LDAP.uvaDisplayDepartment));

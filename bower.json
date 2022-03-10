@@ -27,6 +27,7 @@
     "paper-styles": "^2.0.0",
     "iron-a11y-keys-behavior": "^v2.0.0",
     "iron-collapse": "^2.2.1",
-    "iron-resizable-behavior": "^v2.0.0"
+    "iron-resizable-behavior": "^v2.0.0",
+    "uva-accordion": "2.0.14"
   }
 }

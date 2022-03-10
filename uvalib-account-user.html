@@ -100,7 +100,7 @@
         if (Array.isArray(depts)) {
           if (affiliation === "staff" || affiliation === "faculty") {
             return this._getArrayEntry(depts.filter(dept => dept.startsWith("E")));
-          } else if (affilation === "student") {
+          } else if (affiliation === "student") {
             var d = depts.filter(dept => dept.startsWith("U")); // uva student
             if (d.length < 1) { // wise student?
               d = depts.filter(dept => dept.startsWith("W"));
